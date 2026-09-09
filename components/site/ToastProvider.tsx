@@ -1,11 +1,12 @@
 'use client';
 
-import { createContext, useCallback, useContext, useState, ReactNode } from 'react';
+import { createContext, useCallback, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface Toast {
   id: number;
   message: string;
   isError: boolean;
+  exiting: boolean;
 }
 
 interface ToastContextValue {
@@ -18,8 +19,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const showToast = useCallback((message: string, isError = false) => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, isError }]);
+    const id = Date.now() + Math.random();
+    setToasts((prev) => [...prev, { id, message, isError, exiting: false }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.map((t) => t.id === id ? { ...t, exiting: true } : t));
+    }, 2600);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 3000);
@@ -28,12 +32,18 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      {toasts.map((t) => (
-        <div key={t.id} className={`toast show ${t.isError ? 'error' : ''}`}>
-          <i className="fas fa-feather-alt" style={{ marginRight: '8px' }} />
-          {t.message}
-        </div>
-      ))}
+      <div className="toast-container">
+        {toasts.map((t) => (
+          <div
+            key={t.id}
+            className={`toast ${t.isError ? 'error' : ''}`}
+            style={t.exiting ? { animation: 'toastSlideOut 0.3s ease forwards' } : undefined}
+          >
+            <i className="fas fa-feather-alt" style={{ marginRight: '8px', flexShrink: 0 }} />
+            <span>{t.message}</span>
+          </div>
+        ))}
+      </div>
     </ToastContext.Provider>
   );
 }

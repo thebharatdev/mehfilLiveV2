@@ -13,6 +13,9 @@ interface Profile {
   profilePic?: string;
   gender?: string;
   languagePref?: string;
+  email?: string;
+  city?: string;
+  createdAt?: string;
 }
 
 export default function ProfilePage() {
@@ -32,19 +35,37 @@ export default function ProfilePage() {
       router.push('/login');
       return;
     }
+
+    // Get locally stored user data as fallback
+    const storedUser = localStorage.getItem('mehfil_user') || sessionStorage.getItem('mehfil_user');
+    let localUser: Profile | null = null;
+    if (storedUser) {
+      try { localUser = JSON.parse(storedUser); } catch { /* ignore */ }
+    }
+
     fetch(`${API_BASE_URL}/api/auth/profile`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())
       .then((data) => {
-        if (data.user) {
-          setProfile(data.user);
-          setEditName(`${data.user.firstName || ''} ${data.user.lastName || ''}`);
-          setEditBio(data.user.bio || '');
+        // Merge API data with local data as fallback
+        const merged = { ...(localUser || {}), ...(data.user || {}) };
+        if (data.user || localUser) {
+          setProfile(merged);
+          setEditName(`${merged.firstName || ''} ${merged.lastName || ''}`.trim());
+          setEditBio(merged.bio || '');
         }
         setLoading(false);
       })
-      .catch(() => { setLoading(false); router.push('/login'); });
+      .catch(() => {
+        // If API fails, still show local user data
+        if (localUser) {
+          setProfile(localUser);
+          setEditName(`${localUser.firstName || ''} ${localUser.lastName || ''}`.trim());
+          setEditBio(localUser.bio || '');
+        }
+        setLoading(false);
+      });
 
     fetch(`${API_BASE_URL}/api/poems/my-poems`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -64,14 +85,25 @@ export default function ProfilePage() {
       });
       const data = await res.json();
       if (data.success) {
-        setProfile({ ...profile, ...data.user });
-        showToast('✨ प्रोफ़ाइल अपडेट हुई!');
+        const updated = { ...profile, ...data.user };
+        setProfile(updated);
+        // Update localStorage too
+        const stored = localStorage.getItem('mehfil_user') || sessionStorage.getItem('mehfil_user');
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            const merged = { ...parsed, ...data.user };
+            if (localStorage.getItem('mehfil_user')) localStorage.setItem('mehfil_user', JSON.stringify(merged));
+            else sessionStorage.setItem('mehfil_user', JSON.stringify(merged));
+          } catch { /* ignore */ }
+        }
+        showToast('प्रोफ़ाइल अपडेट हुई!');
         setEditModal(false);
       } else {
-        showToast(data.message || '❌ अपडेट विफल।', true);
+        showToast(data.message || 'अपडेट विफल।', true);
       }
     } catch {
-      showToast('❌ सर्वर त्रुटि।', true);
+      showToast('सर्वर त्रुटि।', true);
     }
   };
 
@@ -85,10 +117,10 @@ export default function ProfilePage() {
       });
       if (res.ok) {
         setPoems(poems.filter((p) => p._id !== id));
-        showToast('🗑️ रचना हटा दी गई।');
+        showToast('रचना हटा दी गई।');
       }
     } catch {
-      showToast('❌ हटाने में विफल।', true);
+      showToast('हटाने में विफल।', true);
     }
   };
 
@@ -102,91 +134,127 @@ export default function ProfilePage() {
 
   if (!profile) return null;
 
+  const fullName = `${profile.firstName || ''} ${profile.lastName || ''}`.trim() || 'अनाम रचनाकार';
+  const genderLabel = profile.gender === 'male' ? 'पुरुष' : profile.gender === 'female' ? 'महिला' : profile.gender || '';
+  const langLabel = profile.languagePref === 'hi' ? 'हिंदी'
+    : profile.languagePref === 'ur' ? 'उर्दू'
+    : profile.languagePref === 'en' ? 'English'
+    : profile.languagePref || 'हिंदी';
+  const memberSince = profile.createdAt ? formatDate(profile.createdAt) : '';
+  const initials = (profile.firstName || 'U').charAt(0).toUpperCase();
+
   return (
-    <section style={{ paddingTop: '2rem' }}>
+    <section style={{ paddingTop: '2rem', paddingBottom: '3rem' }}>
       <div className="mehfil-container">
-        <div className="dashboard-grid">
-          {/* Sidebar */}
-          <div>
-            <div className="profile-card">
-              <div className="avatar-frame" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img
-                  src={profile.profilePic || `https://ui-avatars.com/api/?name=${profile.firstName || 'U'}&background=C16A4B&color=fff&size=130&rounded=true`}
-                  alt={profile.firstName}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
-                />
-              </div>
-              <h2 style={{ textAlign: 'center', fontFamily: 'Cormorant Garamond', fontSize: '1.8rem', color: 'var(--accent-dark)' }}>
-                {profile.firstName} {profile.lastName || ''}
-              </h2>
-              <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.3rem' }}>
-                {profile.gender || ''} · {profile.languagePref || 'hi'}
-              </p>
-              {profile.bio && (
-                <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '1rem', fontStyle: 'italic' }}>
-                  &ldquo;{profile.bio}&rdquo;
-                </p>
-              )}
-              <div className="stats-grid" style={{ marginTop: '1.5rem' }}>
-                <div className="stat-card">
-                  <div className="stat-value">{poems.length}</div>
-                  <div className="stat-label">रचनाएँ</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-value">0</div>
-                  <div className="stat-label">फॉलोअर</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-value">0</div>
-                  <div className="stat-label">फॉलोइंग</div>
-                </div>
-              </div>
-              <button className="secondary-btn" style={{ width: '100%', justifyContent: 'center', marginTop: '1.5rem' }} onClick={() => setEditModal(true)}>
-                <i className="fas fa-edit" /> प्रोफ़ाइल संपादित करें
-              </button>
-            </div>
+        {/* Profile Hero Card */}
+        <div className="profile-hero-card fade-up">
+          {/* Cover banner */}
+          <div className="profile-cover">
+            <div className="profile-cover-pattern">अ क म ह र स</div>
+            <div className="profile-cover-overlay" />
           </div>
 
-          {/* Main */}
-          <div>
-            <div className="glass-panel" id="my-poems">
-              <div className="poem-panel-header">
-                <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: '1.8rem', color: 'var(--accent-dark)' }}>
-                  मेरी रचनाएँ
-                </h2>
-                <Link href="/publish" className="primary-btn" style={{ fontSize: '0.85rem', padding: '10px 20px' }}>
-                  <i className="fas fa-plus" /> नई रचना
-                </Link>
+          <div className="profile-hero-inner">
+            <div className="profile-hero-top">
+              <div className="profile-avatar-wrap">
+                {profile.profilePic ? (
+                  <img
+                    src={profile.profilePic}
+                    alt={fullName}
+                    className="profile-avatar-img"
+                  />
+                ) : (
+                  <div className="profile-avatar-placeholder">{initials}</div>
+                )}
               </div>
-              {poems.length === 0 ? (
-                <p style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2rem' }}>
-                  ✨ अभी कोई रचना नहीं है। अपनी पहली रचना प्रकाशित करें!
-                </p>
-              ) : (
-                poems.map((poem) => (
-                  <div className="poem-card-item" key={poem._id}>
-                    <div className="poem-card-info">
-                      <h3 style={{ fontFamily: 'Cormorant Garamond', fontSize: '1.2rem' }}>{poem.title}</h3>
-                      <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                        {poem.category || 'अन्य'} · {formatDate(poem.createdAt)}
-                      </p>
-                    </div>
-                    <div className="poem-card-actions">
-                      <Link href={`/poem/${poem.slug}`} className="action" style={{ fontSize: '0.8rem' }} aria-label={`${poem.title} देखें`} title="रचना देखें">
-                        <i className="far fa-eye" />
-                      </Link>
-                      <button className="action" style={{ fontSize: '0.8rem' }} onClick={() => setPoemModal(poem)} aria-label={`${poem.title} संपादित करें`} title="रचना संपादित करें">
-                        <i className="fas fa-edit" />
-                      </button>
-                      <button className="action" style={{ fontSize: '0.8rem', color: '#c0392b' }} onClick={() => handleDeletePoem(poem._id)} aria-label={`${poem.title} हटाएँ`} title="रचना हटाएँ">
-                        <i className="fas fa-trash" />
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
+              <div className="profile-hero-info">
+                <h2 className="profile-hero-name">{fullName}</h2>
+                <div className="profile-hero-tags">
+                  {genderLabel && (
+                    <span className="profile-tag"><i className="fas fa-user" /> {genderLabel}</span>
+                  )}
+                  <span className="profile-tag"><i className="fas fa-language" /> {langLabel}</span>
+                  {profile.email && (
+                    <span className="profile-tag profile-tag-email"><i className="far fa-envelope" /> {profile.email}</span>
+                  )}
+                  {profile.city && (
+                    <span className="profile-tag"><i className="fas fa-map-marker-alt" /> {profile.city}</span>
+                  )}
+                </div>
+                {profile.bio ? (
+                  <p className="profile-hero-bio">&ldquo;{profile.bio}&rdquo;</p>
+                ) : (
+                  <p className="profile-hero-bio profile-hero-bio-empty">अभी कोई परिचय नहीं है। संपादित करें बटन दबाकर अपना परिचय जोड़ें।</p>
+                )}
+              </div>
+              <button className="profile-edit-btn" onClick={() => setEditModal(true)}>
+                <i className="fas fa-edit" /> <span>संपादित करें</span>
+              </button>
+            </div>
+
+            {/* Stats */}
+            <div className="profile-stats-row">
+              <div className="profile-stat-item">
+                <i className="fas fa-book-open" />
+                <div className="profile-stat-num">{poems.length}</div>
+                <div className="profile-stat-label">रचनाएँ</div>
+              </div>
+              <div className="profile-stat-item">
+                <i className="fas fa-heart" />
+                <div className="profile-stat-num">0</div>
+                <div className="profile-stat-label">पसंद</div>
+              </div>
+              <div className="profile-stat-item">
+                <i className="fas fa-calendar-plus" />
+                <div className="profile-stat-num">{memberSince || '—'}</div>
+                <div className="profile-stat-label">सदस्यता</div>
+              </div>
             </div>
           </div>
+        </div>
+
+        {/* My Poems */}
+        <div className="glass-panel" id="my-poems" style={{ marginTop: '2rem' }}>
+          <div className="poem-panel-header">
+            <h2 className="poem-panel-title">
+              <i className="fas fa-feather-alt" style={{ color: 'var(--accent)', marginRight: '10px' }} />
+              मेरी रचनाएँ
+            </h2>
+            <Link href="/publish" className="primary-btn" style={{ fontSize: '0.85rem', padding: '10px 20px' }}>
+              <i className="fas fa-plus" /> नई रचना
+            </Link>
+          </div>
+          {poems.length === 0 ? (
+            <div className="profile-empty-state">
+              <i className="fas fa-pen-fancy" />
+              <p>अभी कोई रचना नहीं है। अपनी पहली रचना प्रकाशित करें!</p>
+              <Link href="/publish" className="primary-btn" style={{ marginTop: '1rem' }}>
+                <i className="fas fa-feather" /> लेखन प्रारम्भ करें
+              </Link>
+            </div>
+          ) : (
+            poems.map((poem) => (
+              <div className="poem-card-item" key={poem._id}>
+                <div className="poem-card-info">
+                  <h3 style={{ fontFamily: 'Cormorant Garamond', fontSize: '1.2rem' }}>{poem.title}</h3>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                    {poem.category || 'अन्य'} · {formatDate(poem.createdAt)}
+                  </p>
+                </div>
+                <div className="poem-card-actions">
+                  <Link href={`/poem/${poem.slug}`} className="action" style={{ fontSize: '0.8rem' }} aria-label={`${poem.title} देखें`} title="रचना देखें">
+                    <i className="far fa-eye" />
+                  </Link>
+                  <button className="action" style={{ fontSize: '0.8rem' }} onClick={() => setPoemModal(poem)} aria-label={`${poem.title} संपादित करें`} title="रचना संपादित करें">
+                    <i className="fas fa-edit" />
+                  </button>
+                  <button className="action" style={{ fontSize: '0.8rem', color: '#c0392b' }} onClick={() => handleDeletePoem(poem._id)} aria-label={`${poem.title} हटाएँ`} title="रचना हटाएँ">
+                    <i className="fas fa-trash" />
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
 

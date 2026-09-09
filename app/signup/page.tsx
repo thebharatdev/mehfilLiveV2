@@ -89,51 +89,64 @@ export default function SignupPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+    <div className="auth-page-wrap">
       <div className="auth-orb orb-1" />
       <div className="auth-orb orb-2" />
       <div className="auth-orb orb-3" />
 
-      <Link href="/" className="back-link" style={{ position: 'absolute', top: '2rem', left: '2rem' }}>
-        <i className="fas fa-arrow-left" /> मुखपृष्ठ
+      <Link href="/" className="auth-back-link">
+        <i className="fas fa-feather-alt" /> वापस मेहफ़िल
       </Link>
 
       <div
         ref={cardRef}
-        className="glass-card"
-        style={{ width: '100%', maxWidth: '900px', transition: 'transform 0.2s ease-out' }}
+        className="glass-card auth-card"
         onMouseMove={handleMouseMove}
         onMouseLeave={resetTilt}
       >
         <div className="auth-grid">
           <div className="auth-art">
-            <div style={{ position: 'relative', zIndex: 2 }}>
-              <i className="fas fa-feather-alt" style={{ fontSize: '3rem', color: 'var(--accent)', marginBottom: '1rem' }} />
-              <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: '2.5rem', color: 'var(--accent-dark)' }}>
-                काव्य यात्रा शुरू करें
-              </h2>
-              <p style={{ color: 'var(--text-muted)', marginTop: '1rem', fontSize: '1.1rem' }}>
+            <div className="auth-art-content">
+              <i className="fas fa-feather-alt auth-art-icon" />
+              <h2 className="auth-art-title">काव्य यात्रा शुरू करें</h2>
+              <p className="auth-art-quote">
                 अपनी रचनाओं को दुनिया तक पहुँचाइए
               </p>
+              <div className="auth-art-urdu">
+                <i className="fas fa-star" /> जहाँ हर शब्द एक कहानी कहता है
+              </div>
+              <div className="auth-art-footer">
+                <i className="fas fa-quote-left" /> नया साहित्य, नई शुरुआत
+              </div>
             </div>
+            <div className="auth-art-ink">🪶</div>
           </div>
 
           <div className="auth-form-side">
-            <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: '2rem', color: 'var(--accent-dark)', marginBottom: '0.5rem' }}>
-              पंजीकरण करें
-            </h2>
+            <div className="auth-brand-tag">
+              <i className="fas fa-feather-alt" />
+            </div>
+            <h2 className="auth-form-title">पंजीकरण करें</h2>
+            <p className="auth-form-sub">
+              मेहफ़िल के साथ अपनी साहित्यिक यात्रा आरंभ करें।
+            </p>
+
             <form onSubmit={handleSubmit}>
-              <div style={{ textAlign: 'center', marginBottom: '1.2rem' }}>
+              <div className="signup-pic-wrap">
                 <label style={{ cursor: 'pointer' }}>
                   <img
                     className="profile-preview"
                     src={profilePic || `https://ui-avatars.com/api/?name=U&background=C16A4B&color=fff&size=90&rounded=true`}
                     alt="Profile"
                   />
+                  <div className="signup-pic-hint">
+                    <i className="fas fa-camera" /> फ़ोटो चुनें
+                  </div>
                   <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
                 </label>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+
+              <div className="signup-field-grid">
                 <div className="auth-input-group">
                   <i className="fas fa-user auth-input-icon" />
                   <input className="auth-input" placeholder="पहला नाम" value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} required />
@@ -143,7 +156,8 @@ export default function SignupPage() {
                   <input className="auth-input" placeholder="अंतिम नाम" value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} />
                 </div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+
+              <div className="signup-field-grid">
                 <div className="auth-input-group">
                   <i className="fas fa-venus-mars auth-input-icon" />
                   <select className="auth-input" style={{ appearance: 'none' }} value={formData.gender} onChange={(e) => setFormData({ ...formData, gender: e.target.value })}>
@@ -158,10 +172,12 @@ export default function SignupPage() {
                   <input className="auth-input" type="date" value={formData.dob} onChange={(e) => setFormData({ ...formData, dob: e.target.value })} required />
                 </div>
               </div>
+
               <div className="auth-input-group">
                 <i className="fas fa-envelope auth-input-icon" />
                 <input className="auth-input" type="email" placeholder="ईमेल" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
               </div>
+
               <div className="auth-input-group">
                 <i className="fas fa-lock auth-input-icon" />
                 <input className="auth-input" type="password" placeholder="पासवर्ड" value={formData.password} onChange={(e) => { setFormData({ ...formData, password: e.target.value }); checkStrength(e.target.value); }} required />
@@ -173,10 +189,12 @@ export default function SignupPage() {
                   ))}
                 </div>
               )}
+
               <div className="auth-input-group">
                 <i className="fas fa-lock auth-input-icon" />
                 <input className="auth-input" type="password" placeholder="पासवर्ड पुष्टि करें" value={formData.confirmPassword} onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })} required />
               </div>
+
               <div className="auth-input-group">
                 <i className="fas fa-language auth-input-icon" />
                 <select className="auth-input" style={{ appearance: 'none' }} value={formData.languagePref} onChange={(e) => setFormData({ ...formData, languagePref: e.target.value })}>
@@ -186,12 +204,14 @@ export default function SignupPage() {
                   <option value="bilingual">Bilingual</option>
                 </select>
               </div>
-              <button className="primary-btn" type="submit" disabled={loading} style={{ width: '100%', justifyContent: 'center', marginTop: '0.5rem' }}>
-                {loading ? <div className="spinner" style={{ width: '20px', height: '20px', borderWidth: '2px' }} /> : 'पंजीकरण करें'}
+
+              <button className="primary-btn auth-submit-btn" type="submit" disabled={loading}>
+                {loading ? <div className="spinner" style={{ width: '20px', height: '20px', borderWidth: '2px' }} /> : <><i className="fas fa-feather" /> पंजीकरण करें</>}
               </button>
             </form>
-            <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              पहले से सदस्य? <Link href="/login" style={{ color: 'var(--accent)', fontWeight: 600 }}>प्रवेश करें</Link>
+
+            <div className="auth-signup-prompt">
+              पहले से सदस्य? <Link href="/login">प्रवेश करें</Link>
             </div>
           </div>
         </div>

@@ -53,6 +53,10 @@ export default function LoginPage() {
     showToast('🕊️ पासवर्ड पुनर्प्राप्ति सुविधा जल्द उपलब्ध होगी।');
   };
 
+  const handleSocialLogin = (provider: string) => {
+    showToast(`${provider} से जुड़ने की सुविधा जल्द आ रही है।`);
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -93,46 +97,45 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+    <div className="auth-page-wrap">
       <div className="auth-orb orb-1" />
       <div className="auth-orb orb-2" />
       <div className="auth-orb orb-3" />
 
-      <Link href="/" className="back-link" style={{ position: 'absolute', top: '2rem', left: '2rem' }}>
-        <i className="fas fa-arrow-left" /> मुखपृष्ठ
+      <Link href="/" className="auth-back-link">
+        <i className="fas fa-feather-alt" /> वापस मेहफ़िल
       </Link>
 
       <div
         ref={cardRef}
-        className="glass-card"
-        style={{ width: '100%', maxWidth: '900px', transition: 'transform 0.2s ease-out' }}
+        className="glass-card auth-card"
         onMouseMove={handleMouseMove}
         onMouseLeave={resetTilt}
       >
         <div className="auth-grid">
           <div className="auth-art">
-            <div style={{ position: 'relative', zIndex: 2, maxWidth: 320 }}>
-              <i className="fas fa-feather-alt" style={{ fontSize: '3rem', color: 'var(--accent)', marginBottom: '1rem' }} />
-              <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: '2.5rem', color: 'var(--accent-dark)' }}>
-                अल्फ़ाज़ की महफ़िल
-              </h2>
-              <p style={{ color: 'var(--text-muted)', marginTop: '1rem', fontSize: '1rem', fontStyle: 'italic', lineHeight: 1.7 }}>
-                “हर लफ्ज़ एक एहसास है, हर शे’र एक दास्ताँ।”
+            <div className="auth-art-content">
+              <i className="fas fa-feather-alt auth-art-icon" />
+              <h2 className="auth-art-title">अल्फ़ाज़ की महफ़िल</h2>
+              <p className="auth-art-quote">
+                &ldquo;हर लफ्ज़ एक एहसास है, हर शे&rsquo;र एक दास्ताँ।&rdquo;
               </p>
-              <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px dashed rgba(193, 106, 75, 0.3)', color: '#936E56', fontSize: '1.1rem' }}>
+              <div className="auth-art-urdu">
                 <i className="fas fa-moon" /> जहाँ अल्फ़ाज़ महसूसात बन जाते हैं
               </div>
+              <div className="auth-art-footer">
+                <i className="fas fa-quote-left" /> साहित्य का सच्चा सफर
+              </div>
             </div>
+            <div className="auth-art-ink">🪶</div>
           </div>
 
           <div className="auth-form-side">
-            <div style={{ marginBottom: '1rem' }}>
-              <i className="fas fa-feather-alt" style={{ fontSize: '2rem', color: 'var(--accent)' }} />
+            <div className="auth-brand-tag">
+              <i className="fas fa-feather-alt" />
             </div>
-            <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: '2.4rem', color: 'var(--text-dark)', marginBottom: '0.5rem' }}>
-              स्वागत है
-            </h2>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', borderLeft: '2px solid var(--accent)', paddingLeft: 12, fontSize: '0.9rem' }}>
+            <h2 className="auth-form-title">स्वागत है</h2>
+            <p className="auth-form-sub">
               अपने खाते में प्रवेश करें और रचनात्मकता में डूब जाएँ।
             </p>
 
@@ -159,20 +162,38 @@ export default function LoginPage() {
                   required
                 />
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+              <div className="auth-options-row">
+                <label className="auth-checkbox">
                   <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
-                  मुझे याद रखें
+                  <span>मुझे याद रखें</span>
                 </label>
-                <button type="button" onClick={handleForgotPassword} style={{ border: 'none', background: 'none', padding: 0, fontSize: '0.85rem', color: 'var(--accent)', cursor: 'pointer' }}>पासवर्ड भूल गए?</button>
+                <button type="button" onClick={handleForgotPassword} className="auth-forgot-link">
+                  पासवर्ड भूल गए?
+                </button>
               </div>
-              <button className="primary-btn" type="submit" disabled={loading} style={{ width: '100%', justifyContent: 'center' }}>
+              <button className="primary-btn auth-submit-btn" type="submit" disabled={loading}>
                 {loading ? <><div className="spinner" style={{ width: '20px', height: '20px', borderWidth: '2px' }} /> कृपया प्रतीक्षा करें...</> : <><i className="fas fa-pen-fancy" /> प्रवेश करें</>}
               </button>
+
+              <div className="auth-divider">
+                <span></span> या <span></span>
+              </div>
+
+              <div className="auth-social-row">
+                <button type="button" className="auth-social-btn" onClick={() => handleSocialLogin('गूगल')}>
+                  <i className="fab fa-google" />
+                </button>
+                <button type="button" className="auth-social-btn" onClick={() => handleSocialLogin('गिटहब')}>
+                  <i className="fab fa-github" />
+                </button>
+                <button type="button" className="auth-social-btn" onClick={() => handleSocialLogin('ट्विटर')}>
+                  <i className="fab fa-twitter" />
+                </button>
+              </div>
             </form>
 
-            <div style={{ textAlign: 'center', marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(200, 180, 160, 0.3)', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              क्या आप नए सदस्य हैं? <Link href="/signup" style={{ color: 'var(--accent)', fontWeight: 600 }}>नई रचना शुरू करें →</Link>
+            <div className="auth-signup-prompt">
+              क्या आप नए सदस्य हैं? <Link href="/signup">नई रचना शुरू करें →</Link>
             </div>
           </div>
         </div>

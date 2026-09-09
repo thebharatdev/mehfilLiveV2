@@ -395,7 +395,6 @@ nav {
   background: linear-gradient(120deg, #C16A4B, #A84C2E);
   background-clip: text; -webkit-background-clip: text; color: transparent;
   letter-spacing: -0.5px; display: inline-flex; align-items: center; gap: 8px;
-  flex-shrink: 0; white-space: nowrap;
 }
 .nav-links { display: flex; gap: 2.5rem; align-items: center; }
 .nav-links a {
@@ -417,14 +416,12 @@ nav {
 }
 .nav-btn:hover { transform: translateY(-3px); background: #A84C2E; box-shadow: 0 12px 20px rgba(193, 106, 75, 0.3); }
 .write-btn { display: flex; align-items: center; gap: 10px; }
-.nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
 
 .menu-btn {
   display: none; font-size: 1.8rem; cursor: pointer; color: var(--accent);
   width: 48px; height: 48px; border-radius: 14px;
   align-items: center; justify-content: center;
   background: rgba(193, 106, 75, .08); border: 1px solid rgba(193, 106, 75, .15);
-  flex-shrink: 0;
 }
 
 .mobile-overlay {
@@ -543,38 +540,18 @@ footer::after {
 .heart-beat { color: var(--accent); animation: pulse 1.5s infinite; display: inline-block; }
 
 /* Toast */
-.toast-container {
-  position: fixed; bottom: 28px; left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  display: flex; flex-direction: column-reverse; gap: 10px;
-  align-items: center; pointer-events: none;
-  width: max-content;
-  max-width: calc(100vw - 2rem);
-}
 .toast {
-  background: #2C241F; color: #F1E2D2; padding: 14px 28px;
+  position: fixed; bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #2C241F; color: #F1E2D2; padding: 12px 28px;
   border-radius: 60px; font-size: 0.85rem; backdrop-filter: blur(10px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  z-index: 2000; transition: 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
+  pointer-events: none; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
   font-family: Inter, sans-serif; border: 1px solid rgba(193,106,75,0.3);
   display: flex; align-items: center; gap: 8px;
-  animation: toastSlideIn 0.35s cubic-bezier(0.2,0.9,0.4,1.1) forwards;
-  max-width: calc(100vw - 2rem); text-align: center;
-  white-space: normal; word-break: break-word;
 }
+.toast.show { transform: translateX(-50%) translateY(0px); }
 .toast.error { background: #7D3C2A; color: #FFEAD2; }
-@keyframes toastSlideIn {
-  from { opacity: 0; transform: translateY(40px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes toastSlideOut {
-  from { opacity: 1; transform: translateY(0) scale(1); }
-  to { opacity: 0; transform: translateY(20px) scale(0.95); }
-}
-@media (max-width: 480px) {
-  .toast { font-size: 0.8rem; padding: 12px 20px; max-width: calc(100vw - 1.5rem); }
-  .toast-container { bottom: 20px; }
-}
 
 /* Auth pages */
 .auth-orb { position: fixed; border-radius: 50%; filter: blur(90px); z-index: -2; opacity: 0.5; animation: slowDrift 22s infinite alternate ease-in-out; }
@@ -710,188 +687,12 @@ footer::after {
 }
 .poem-detail-card:hover { box-shadow: 0 30px 40px -18px rgba(0, 0, 0, 0.12); }
 .poem-detail-card::before { content: '❝'; position: absolute; right: 30px; top: 20px; font-size: 100px; color: rgba(193, 106, 75, 0.1); }
-.poem-body { font-size: 1.2rem; line-height: 1.85; color: #2a241e; font-family: 'Noto Serif Devanagari', 'Cormorant Garamond', serif; white-space: pre-wrap; word-break: break-word; background: rgba(250, 245, 235, 0.5); padding: 1.8rem; border-radius: 1.5rem; margin: 1rem 0 0.8rem; transition: font-size 0.2s ease, line-height 0.2s ease; }
-.poem-body.fs-sm { font-size: 0.95rem; line-height: 1.7; }
-.poem-body.fs-md { font-size: 1.2rem; line-height: 1.85; }
-.poem-body.fs-lg { font-size: 1.5rem; line-height: 2; }
-.poem-body.fs-xl { font-size: 1.8rem; line-height: 2.1; }
-.font-size-controls { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255,253,248,0.9); border: 1px solid var(--border-light); border-radius: 50px; padding: 6px 10px; }
-.fs-btn { border: none; background: rgba(193,106,75,0.08); color: var(--accent); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; transition: 0.2s; }
-.fs-btn:hover { background: var(--accent); color: white; transform: scale(1.1); }
-.fs-btn.active { background: var(--accent); color: white; }
-.fs-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; padding: 0 4px; }
+.poem-body { font-size: 1.2rem; line-height: 1.85; color: #2a241e; font-family: 'Noto Serif Devanagari', 'Cormorant Garamond', serif; white-space: pre-wrap; word-break: break-word; background: rgba(250, 245, 235, 0.5); padding: 1.8rem; border-radius: 1.5rem; margin: 1rem 0 0.8rem; }
 .author-card { display: flex; align-items: center; gap: 1.5rem; padding: 1.8rem; background: white; border-radius: 1.8rem; border: 1px solid var(--border-light); cursor: pointer; transition: all 0.3s ease; flex-wrap: wrap; text-decoration: none; }
 .author-card:hover { transform: translateY(-4px); box-shadow: 0 30px 40px -18px rgba(0, 0, 0, 0.12); border-color: var(--accent-soft); }
 .author-card img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); background: #efe0d2; }
 .poem-mini-card { background: white; border-radius: 1.5rem; padding: 1.5rem; border: 1px solid var(--border-light); cursor: pointer; transition: 0.25s; text-decoration: none; display: block; }
 .poem-mini-card:hover { transform: translateY(-6px); box-shadow: 0 30px 40px -18px rgba(0, 0, 0, 0.12); border-color: var(--accent); }
-
-/* Writer of the Week */
-.wotw-card {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  background: linear-gradient(135deg, #fffcf8, #fdf6ef);
-  border: 2px solid rgba(214, 190, 170, 0.35);
-  border-radius: 2.5rem;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 30px 80px rgba(120, 80, 50, 0.12);
-  transition: all 0.4s ease;
-}
-.wotw-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 40px 90px rgba(120, 80, 50, 0.18);
-  border-color: var(--accent-soft);
-}
-.wotw-card::before {
-  content: '❦';
-  position: absolute;
-  right: 30px;
-  top: 20px;
-  font-size: 8rem;
-  color: rgba(193, 106, 75, 0.06);
-  z-index: 1;
-  pointer-events: none;
-}
-.wotw-image-side {
-  position: relative;
-  background: linear-gradient(180deg, #fde8dc, #f8d5c4);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-}
-.wotw-image-side img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.95;
-  transition: transform 0.6s ease;
-}
-.wotw-card:hover .wotw-image-side img {
-  transform: scale(1.05);
-}
-.wotw-image-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 5rem;
-  color: var(--accent);
-  background: linear-gradient(135deg, #dfbda9, #c78d72);
-  color: white;
-}
-.wotw-crown-badge {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #f5d99e, #e4b86b);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  color: #fff;
-  box-shadow: 0 8px 20px rgba(228, 184, 107, 0.4);
-  animation: wotwCrownGlow 3s ease-in-out infinite;
-  z-index: 2;
-}
-@keyframes wotwCrownGlow {
-  0%, 100% { box-shadow: 0 8px 20px rgba(228, 184, 107, 0.4); transform: scale(1); }
-  50% { box-shadow: 0 12px 30px rgba(228, 184, 107, 0.6); transform: scale(1.08); }
-}
-.wotw-content-side {
-  padding: 3rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-  z-index: 2;
-}
-.wotw-award-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 22px;
-  background: linear-gradient(135deg, #fff8e8, #f5e6c8);
-  border-radius: 50px;
-  color: #9e7a2f;
-  font-weight: 600;
-  font-size: 0.85rem;
-  width: max-content;
-  margin-bottom: 1.5rem;
-  border: 1px solid rgba(228, 184, 107, 0.3);
-}
-.wotw-name {
-  font-size: 2.8rem;
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 700;
-  color: #6a3f2a;
-  margin-bottom: 1rem;
-  line-height: 1.2;
-}
-.wotw-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #c16a4b;
-  margin-bottom: 1.5rem;
-}
-.wotw-divider span {
-  width: 80px;
-  height: 1px;
-  background: #cdb4a5;
-}
-.wotw-bio {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: #6d625b;
-  font-family: 'Tiro Devanagari Hindi', 'Noto Serif Devanagari', serif;
-  margin-bottom: 1.8rem;
-}
-.wotw-stats {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-.wotw-stat {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(193, 106, 75, 0.08);
-  padding: 0.5rem 1.2rem;
-  border-radius: 50px;
-  font-size: 0.85rem;
-  color: var(--accent-dark);
-  font-weight: 500;
-}
-.wotw-stat i {
-  color: var(--accent);
-}
-.wotw-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--accent);
-  color: white;
-  padding: 14px 32px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  width: max-content;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 18px rgba(193, 106, 75, 0.3);
-}
-.wotw-card:hover .wotw-cta {
-  background: #b25538;
-  transform: translateX(6px);
-  box-shadow: 0 12px 25px rgba(193, 106, 75, 0.4);
-}
 
 /* Responsive */
 @media (max-width: 1024px) {
@@ -907,22 +708,19 @@ footer::after {
   .form-grid { grid-template-columns: 1fr; }
   .auth-grid { grid-template-columns: 1fr; }
   .auth-art { display: none; }
-  .wotw-card { grid-template-columns: 1fr; }
-  .wotw-image-side { min-height: 300px; }
-  .wotw-content-side { padding: 2.5rem; }
 }
 
 @media (max-width: 900px) {
   .featured-reading-card { grid-template-columns: 1fr; }
-  .visual-side { min-height: 280px; }
+  .visual-side { min-height: 320px; }
   .poem-side { padding: 30px; }
-  .reading-layout { padding: 1.5rem; }
-  .reading-layout::before { font-size: 100px; right: 20px; top: 20px; }
 }
 
 @media (max-width: 880px) {
   .poem-panel-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
-  /* Collapse nav to hamburger at tablet width */
+}
+
+@media (max-width: 680px) {
   .nav-links { display: none; }
   .menu-btn { display: flex; }
   .nav-links.active {
@@ -939,34 +737,12 @@ footer::after {
     background: rgba(193, 106, 75, .04); margin: 6px 0;
   }
   .nav-links.active a:hover { background: #C16A4B; color: #fff; transform: translateX(4px); }
-  /* Collapse write button to icon-only */
   .write-btn { width: 48px; height: 48px; padding: 0 !important; border-radius: 14px; justify-content: center; box-shadow: none; background: rgba(193, 106, 75, .08) !important; border: 1px solid rgba(193, 106, 75, .15); color: #C16A4B; }
   .write-btn span { display: none; }
   .write-btn i { font-size: 1.25rem; margin: 0; }
-  .logo { font-size: 1.6rem; }
-  .nav-inner { padding: 14px 0; }
-}
-
-@media (max-width: 680px) {
   .hero h1 { font-size: 3rem; }
   .section-title { font-size: 2.5rem; }
-  .reading-layout { padding: 1.2rem; }
-  .featured-reading-card { min-height: auto; }
-  .poem-side { padding: 24px 20px; }
-  .poem-title { font-size: 1.6rem; }
-  .poem-text { font-size: 0.95rem; line-height: 1.8; }
-  .poem-line { width: 200px; }
-  .poem-actions { gap: 0.5rem; }
-  .action { padding: 0.5rem 1rem; font-size: 0.8rem; }
-  .visual-side { min-height: 220px; }
-  .wotw-card { border-radius: 1.5rem; }
-  .wotw-image-side { min-height: 240px; }
-  .wotw-content-side { padding: 1.8rem 1.5rem; }
-  .wotw-name { font-size: 2rem; }
-  .wotw-bio { font-size: 0.95rem; line-height: 1.6; }
-  .wotw-cta { padding: 12px 24px; font-size: 0.85rem; }
-  .wotw-crown-badge { width: 52px; height: 52px; font-size: 1.3rem; }
-  .wotw-card::before { font-size: 5rem; right: 15px; top: 10px; }
+  .reading-layout { padding: 1.8rem; }
   .cta { padding: 2rem; }
   .poem-grid .poem-card { flex: 0 0 100%; min-width: 100%; }
   .poem-grid { gap: 12px; scroll-snap-type: x mandatory; }
@@ -992,26 +768,11 @@ footer::after {
 }
 
 @media (max-width: 480px) {
-  .logo { font-size: 1.4rem; }
-  .nav-inner { padding: 12px 0; }
-  .nav-actions { gap: 8px; }
-  .avatar-img, .avatar-initial { width: 38px; height: 38px; font-size: 0.95rem; }
-  .write-btn { width: 42px; height: 42px; }
-  .menu-btn { width: 42px; height: 42px; font-size: 1.5rem; }
   .stats-grid { grid-template-columns: repeat(3, 1fr); }
   .featured-title { font-size: 2.5rem; }
   .stat-card { padding: 1rem 0.5rem; }
   .stat-card .stat-value { font-size: 1.5rem; }
   .stat-card .stat-label { font-size: 0.7rem; }
-  .wotw-name { font-size: 1.7rem; }
-  .wotw-content-side { padding: 1.5rem 1.2rem; }
-  .wotw-stats { gap: 0.8rem; }
-  .wotw-stat { padding: 0.4rem 1rem; font-size: 0.78rem; }
-  .poem-side { padding: 20px 16px; }
-  .poem-title { font-size: 1.4rem; }
-  .poem-text { font-size: 0.9rem; }
-  .poem-actions { gap: 0.4rem; }
-  .action { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
 }
 
 /* Back link */
@@ -1061,537 +822,4 @@ footer::after {
 /* Stats grid responsive */
 @media (max-width: 680px) {
   .stats-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 0.75rem !important; }
-  .author-hero-card { padding: 1.5rem !important; border-radius: 1.5rem !important; }
-  .author-hero-card img { width: 100px !important; height: 100px !important; }
-  .author-hero-card h1 { font-size: 1.8rem !important; }
-  .author-poems-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
-  .author-poem-card { padding: 1.2rem !important; border-radius: 1.2rem !important; }
-  .author-poem-card h3 { font-size: 1.2rem !important; }
-  .author-poem-card p { font-size: 0.8rem !important; }
-  .author-more-title { font-size: 1.5rem !important; }
-  .author-search-input { padding: 0.8rem 1rem 0.8rem 2.8rem !important; font-size: 0.85rem !important; }
-  .poem-detail-card { padding: 1.2rem !important; }
-  .poem-detail-card h1 { font-size: 1.8rem !important; }
-  .poem-body { padding: 1.2rem !important; border-radius: 1rem !important; }
-  .poem-body.fs-sm { font-size: 0.85rem; }
-  .poem-body.fs-md { font-size: 1rem; }
-  .poem-body.fs-lg { font-size: 1.25rem; }
-  .poem-body.fs-xl { font-size: 1.5rem; }
-  .font-size-controls { padding: 4px 8px; }
-  .fs-btn { width: 32px; height: 32px; font-size: 0.75rem; }
-  .author-card { flex-direction: column !important; text-align: center !important; gap: 1rem !important; padding: 1.2rem !important; }
-  .author-card img { width: 70px !important; height: 70px !important; }
-  .author-info h3 { font-size: 1.3rem !important; }
-  .more-poems-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
-  .poem-mini-card { padding: 1.2rem !important; }
-}
-
-/* ===== Auth Pages (Login / Signup) ===== */
-.auth-page-wrap {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1.5rem;
-  position: relative;
-}
-.auth-back-link {
-  position: fixed;
-  top: 28px;
-  left: 28px;
-  z-index: 100;
-  text-decoration: none;
-  font-weight: 500;
-  color: #7D5A48;
-  background: rgba(255, 252, 245, 0.7);
-  backdrop-filter: blur(8px);
-  padding: 10px 20px;
-  border-radius: 60px;
-  font-size: 0.9rem;
-  border: 1px solid rgba(193, 106, 75, 0.2);
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.auth-back-link:hover {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(193, 106, 75, 0.2);
-}
-.auth-card {
-  width: 100%;
-  max-width: 1120px;
-  border-radius: 3rem;
-  overflow: hidden;
-  transition: transform 0.2s ease-out;
-}
-.auth-art {
-  background: linear-gradient(135deg, #fef0e8 0%, #fbe6da 100%);
-  padding: 3rem 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.auth-art::before {
-  content: '❦';
-  font-size: 18rem;
-  position: absolute;
-  bottom: -40px;
-  left: -40px;
-  opacity: 0.08;
-  font-family: serif;
-  pointer-events: none;
-  transform: rotate(-12deg);
-}
-.auth-art::after {
-  content: '✍️';
-  font-size: 10rem;
-  position: absolute;
-  top: 20px;
-  right: -30px;
-  opacity: 0.07;
-  pointer-events: none;
-}
-.auth-art-content {
-  position: relative;
-  z-index: 2;
-  max-width: 320px;
-}
-.auth-art-icon {
-  font-size: 3rem;
-  color: var(--accent);
-  margin-bottom: 1rem;
-  opacity: 0.7;
-}
-.auth-art-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin: 1rem 0;
-  background: linear-gradient(120deg, #2C241F, #9E4F36);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-.auth-art-quote {
-  color: #5f4b3c;
-  line-height: 1.7;
-  font-size: 1rem;
-  font-style: italic;
-}
-.auth-art-urdu {
-  font-family: 'Tiro Devanagari Hindi', serif;
-  font-size: 1.25rem;
-  margin-top: 1.5rem;
-  border-top: 1px dashed rgba(193, 106, 75, 0.3);
-  padding-top: 1.5rem;
-  color: #936E56;
-}
-.auth-art-footer {
-  margin-top: 2rem;
-  font-size: 0.8rem;
-  color: #AA8D74;
-}
-.auth-art-ink {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  font-size: 70px;
-  opacity: 0.03;
-  pointer-events: none;
-  transform: rotate(10deg);
-}
-.auth-form-side {
-  padding: 3rem 2.5rem;
-  background: rgba(255, 252, 245, 0.75);
-}
-.auth-brand-tag {
-  margin-bottom: 1rem;
-}
-.auth-brand-tag i {
-  font-size: 2rem;
-  background: linear-gradient(135deg, #C16A4B, #A84C2E);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-.auth-form-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.4rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: var(--text-dark);
-}
-.auth-form-sub {
-  color: var(--text-muted);
-  margin-bottom: 2rem;
-  border-left: 2px solid var(--accent);
-  padding-left: 12px;
-  font-size: 0.9rem;
-}
-.auth-options-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  font-size: 0.85rem;
-}
-.auth-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #5f4b3c;
-  cursor: pointer;
-}
-.auth-checkbox input {
-  accent-color: var(--accent);
-  cursor: pointer;
-}
-.auth-forgot-link {
-  border: none;
-  background: none;
-  padding: 0;
-  color: var(--accent);
-  font-weight: 500;
-  cursor: pointer;
-  text-decoration: none;
-  transition: 0.2s;
-  font-size: 0.85rem;
-}
-.auth-forgot-link:hover {
-  text-decoration: underline;
-}
-.auth-submit-btn {
-  width: 100%;
-  justify-content: center;
-  margin-bottom: 1.8rem;
-}
-.auth-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 1.8rem 0;
-  color: #CBBBAE;
-  font-size: 0.8rem;
-}
-.auth-divider span {
-  flex: 1;
-  height: 1px;
-  background: #e2d2c4;
-}
-.auth-social-row {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-.auth-social-btn {
-  background: white;
-  border: 1px solid #e2d2c4;
-  padding: 10px;
-  border-radius: 60px;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  color: #7D5A48;
-  transition: 0.25s;
-  cursor: pointer;
-}
-.auth-social-btn:hover {
-  background: #FEF3EA;
-  transform: translateY(-3px);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.auth-signup-prompt {
-  text-align: center;
-  font-size: 0.9rem;
-  border-top: 1px solid rgba(200, 180, 160, 0.3);
-  padding-top: 1.8rem;
-  color: var(--text-muted);
-}
-.auth-signup-prompt a {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 600;
-  margin-left: 5px;
-}
-.auth-signup-prompt a:hover {
-  text-decoration: underline;
-}
-.signup-pic-wrap {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-.signup-pic-hint {
-  margin-top: 0.5rem;
-  font-size: 0.8rem;
-  color: var(--accent);
-  font-weight: 500;
-}
-.signup-field-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-/* ===== Profile Page ===== */
-.profile-hero-card {
-  background: rgba(255, 253, 248, 0.92);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-light);
-  border-radius: 2rem;
-  padding: 0;
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-}
-.profile-hero-inner { padding: 2.5rem; }
-.profile-cover {
-  height: 140px;
-  background: linear-gradient(135deg, #f5d4be, #e8a888, #d4956b);
-  position: relative;
-  overflow: hidden;
-}
-.profile-cover-pattern {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  letter-spacing: 40px;
-  color: rgba(255, 255, 255, 0.15);
-  white-space: nowrap;
-  font-family: 'Tiro Devanagari Hindi', serif;
-}
-.profile-cover-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 60%, rgba(255,253,248,0.3));
-}
-.profile-hero-top {
-  display: flex;
-  align-items: flex-start;
-  gap: 2rem;
-}
-.profile-hero-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.6rem;
-}
-.profile-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(193, 106, 75, 0.08);
-  color: var(--accent-dark);
-  padding: 5px 14px;
-  border-radius: 50px;
-  font-size: 0.78rem;
-  font-weight: 500;
-  border: 1px solid rgba(193, 106, 75, 0.12);
-}
-.profile-tag i { font-size: 0.7rem; color: var(--accent); }
-.profile-tag-email { max-width: 100%; overflow-wrap: anywhere; }
-.profile-avatar-wrap {
-  flex-shrink: 0;
-}
-.profile-avatar-img {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid var(--accent-soft);
-  background: #efe0d2;
-  margin-top: -65px;
-  box-shadow: 0 8px 24px rgba(120, 80, 50, 0.15);
-}
-.profile-avatar-placeholder {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  border: 4px solid var(--accent-soft);
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  color: white;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3.5rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: -65px;
-  box-shadow: 0 8px 24px rgba(120, 80, 50, 0.15);
-}
-.profile-hero-info {
-  flex: 1;
-  min-width: 0;
-}
-.profile-hero-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--accent-dark);
-  margin-bottom: 0.3rem;
-}
-.profile-hero-meta {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  margin-bottom: 0.5rem;
-}
-.profile-hero-bio {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  font-style: italic;
-  line-height: 1.6;
-}
-.profile-hero-bio-empty {
-  font-style: normal;
-  opacity: 0.6;
-  font-size: 0.8rem;
-}
-.profile-edit-btn {
-  background: rgba(193, 106, 75, 0.08);
-  border: 1px solid rgba(193, 106, 75, 0.2);
-  color: var(--accent);
-  padding: 10px 20px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: 0.25s;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.profile-edit-btn:hover {
-  background: var(--accent);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(193, 106, 75, 0.2);
-}
-.profile-stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border-light);
-}
-.profile-stat-item {
-  text-align: center;
-  background: #faf6f2;
-  border-radius: 1.2rem;
-  padding: 1.5rem 0.75rem;
-  border: 1px solid var(--border-light);
-  transition: 0.25s;
-}
-.profile-stat-item:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-sm);
-}
-.profile-stat-item i {
-  font-size: 1.8rem;
-  color: var(--accent);
-  margin-bottom: 0.5rem;
-}
-.profile-stat-num {
-  font-size: 2rem;
-  font-family: 'Cormorant Garamond', serif;
-  color: var(--accent-dark);
-  font-weight: 700;
-}
-.profile-stat-label {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: 0.3rem;
-}
-.profile-empty-state {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--text-muted);
-}
-.profile-empty-state i {
-  font-size: 3rem;
-  color: var(--accent);
-  opacity: 0.5;
-  margin-bottom: 1rem;
-}
-.poem-panel-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.8rem;
-  color: var(--accent-dark);
-}
-
-/* ===== Responsive: Auth & Profile ===== */
-@media (max-width: 1024px) {
-  .auth-card { max-width: 520px; }
-  .auth-art { display: none; }
-  .auth-grid { grid-template-columns: 1fr; }
-  .auth-form-side { padding: 2.5rem 2rem; }
-}
-
-@media (max-width: 680px) {
-  .auth-page-wrap { padding: 1rem; }
-  .auth-back-link {
-    top: 16px;
-    left: 16px;
-    font-size: 0.8rem;
-    padding: 8px 16px;
-  }
-  .auth-card { border-radius: 2rem; }
-  .auth-form-side { padding: 2rem 1.5rem; }
-  .auth-form-title { font-size: 2rem; }
-  .auth-art-title { font-size: 2rem; }
-  .auth-options-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-  .auth-social-btn { width: 42px; height: 42px; }
-  .signup-field-grid { grid-template-columns: 1fr; gap: 0; }
-  .profile-hero-card { border-radius: 1.5rem; }
-  .profile-hero-inner { padding: 1.5rem; }
-  .profile-cover { height: 100px; }
-  .profile-cover-pattern { font-size: 1.4rem; letter-spacing: 20px; }
-  .profile-hero-top {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-    align-items: center;
-  }
-  .profile-avatar-img { width: 100px; height: 100px; margin-top: -50px; border-width: 3px; }
-  .profile-avatar-placeholder { width: 100px; height: 100px; margin-top: -50px; font-size: 2.5rem; }
-  .profile-hero-tags { justify-content: center; }
-  .profile-hero-name { font-size: 1.6rem; }
-  .profile-edit-btn { width: 100%; justify-content: center; }
-  .profile-stats-row { gap: 0.75rem; }
-  .profile-stat-item { padding: 1rem 0.5rem; }
-  .profile-stat-num { font-size: 1.5rem; }
-  .profile-stat-label { font-size: 0.7rem; }
-  .poem-panel-title { font-size: 1.4rem; }
-}
-
-@media (max-width: 480px) {
-  .auth-form-side { padding: 1.8rem 1.2rem; }
-  .auth-form-title { font-size: 1.8rem; }
-  .profile-hero-inner { padding: 1.2rem; }
-  .profile-cover { height: 80px; }
-  .profile-cover-pattern { font-size: 1.1rem; letter-spacing: 12px; }
-  .profile-avatar-img { width: 80px; height: 80px; margin-top: -40px; }
-  .profile-avatar-placeholder { width: 80px; height: 80px; margin-top: -40px; font-size: 2rem; }
-  .profile-stat-item i { font-size: 1.4rem; }
-  .profile-stat-num { font-size: 1.3rem; }
 }

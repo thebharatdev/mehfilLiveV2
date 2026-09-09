@@ -38,7 +38,6 @@ function AuthorContent() {
       .catch(() => setLoading(false));
   }, [authorId]);
 
-  // Fade-up observer
   useEffect(() => {
     if (loading) return;
     const observer = new IntersectionObserver(
@@ -84,49 +83,17 @@ function AuthorContent() {
   if (loading) {
     return (
       <main className="mehfil-container" style={{ padding: '2rem 0 4rem' }}>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '70vh',
-          width: '100%',
-        }}>
-          <div style={{
-            textAlign: 'center',
-            background: 'rgba(255, 253, 248, 0.9)',
-            backdropFilter: 'blur(8px)',
-            padding: '3rem 3.5rem',
-            borderRadius: '3rem',
-            border: '1px solid var(--border-light)',
-            boxShadow: 'var(--shadow-sm)',
-          }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '70vh', width: '100%' }}>
+          <div style={{ textAlign: 'center', background: 'rgba(255, 253, 248, 0.9)', backdropFilter: 'blur(8px)', padding: '3rem 3.5rem', borderRadius: '3rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 14, marginBottom: 24 }}>
               <div style={{ width: 22, height: 22, background: '#e0a87c', borderRadius: '50%', animation: 'inkFlowPoets 1.4s infinite ease-in-out both', animationDelay: '-0.32s' }} />
               <div style={{ width: 22, height: 22, background: 'var(--accent)', borderRadius: '50%', animation: 'inkFlowPoets 1.4s infinite ease-in-out both', animationDelay: '-0.16s' }} />
               <div style={{ width: 22, height: 22, background: 'var(--accent-dark)', borderRadius: '50%', animation: 'inkFlowPoets 1.4s infinite ease-in-out both' }} />
             </div>
-            <div style={{
-              fontFamily: 'Cormorant Garamond, serif',
-              fontSize: '1.4rem',
-              letterSpacing: '1px',
-              background: 'linear-gradient(120deg, #c16a4b, #e4a482)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-              fontWeight: 700,
-              marginBottom: 12,
-            }}>
+            <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.4rem', letterSpacing: '1px', background: 'linear-gradient(120deg, #c16a4b, #e4a482)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', fontWeight: 700, marginBottom: 12 }}>
               रचनाकार की दुनिया में आपका स्वागत है...
             </div>
-            <div style={{
-              fontSize: '0.85rem',
-              color: 'var(--text-muted)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 8,
-            }}>
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
               <i className="fas fa-feather-alt" style={{ animation: 'featherSwayPoets 1.8s infinite' }} />
               कृपया प्रतीक्षा करें
               <i className="fas fa-spinner fa-pulse" />
@@ -167,7 +134,7 @@ function AuthorContent() {
       </Link>
 
       {/* Hero Profile Card */}
-      <div className="hero-card fade-up" style={{
+      <div className="hero-card author-hero-card fade-up" style={{
         background: 'var(--card-bg)',
         backdropFilter: 'blur(2px)',
         borderRadius: '2rem',
@@ -180,20 +147,12 @@ function AuthorContent() {
         <img
           src={profilePic}
           alt={fullName}
-          style={{
-            width: 140, height: 140, borderRadius: '50%', objectFit: 'cover',
-            border: '4px solid var(--accent)', margin: '0 auto 1.2rem', background: '#efe0d2',
-            display: 'block',
-          }}
+          style={{ width: 140, height: 140, borderRadius: '50%', objectFit: 'cover', border: '4px solid var(--accent)', margin: '0 auto 1.2rem', background: '#efe0d2', display: 'block' }}
         />
         <h1 style={{ fontFamily: 'Cormorant Garamond', fontSize: '2.5rem', fontWeight: 700, color: 'var(--accent-dark)', marginBottom: '0.5rem' }}>
           {fullName}
         </h1>
-        <div style={{
-          color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1rem',
-          display: 'inline-flex', alignItems: 'center', gap: 8,
-          background: 'rgba(193, 106, 75, 0.08)', padding: '0.3rem 1rem', borderRadius: 40,
-        }}>
+        <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1rem', display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(193, 106, 75, 0.08)', padding: '0.3rem 1rem', borderRadius: 40, maxWidth: '100%', wordBreak: 'break-all' }}>
           <i className="far fa-envelope" /> {author.email || 'alumni@mehfil.com'}
         </div>
         <br />
@@ -210,9 +169,7 @@ function AuthorContent() {
       </div>
 
       {/* Stats Grid */}
-      <div className="stats-grid fade-up" style={{
-        display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '2.5rem',
-      }}>
+      <div className="stats-grid fade-up" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '2.5rem' }}>
         <div style={{ background: 'white', borderRadius: '1.5rem', padding: '1.5rem', textAlign: 'center', border: '1px solid var(--border-light)', transition: '0.25s' }}>
           <i className="fas fa-book-open" style={{ fontSize: '2.2rem', color: 'var(--accent)', marginBottom: '0.8rem' }} />
           <div style={{ fontSize: '2rem', fontWeight: 700, fontFamily: 'Cormorant Garamond', color: 'var(--accent-dark)' }}>{poemsCount}</div>
@@ -231,19 +188,12 @@ function AuthorContent() {
       </div>
 
       {/* Bio Section */}
-      <div className="bio-section fade-up" style={{
-        background: 'rgba(255, 250, 240, 0.7)', borderRadius: '1.5rem', padding: '1.5rem',
-        marginBottom: '2.5rem', borderLeft: '4px solid var(--accent)',
-        fontStyle: 'italic', color: 'var(--text-dark)', fontSize: '1rem',
-      }}>
+      <div className="bio-section fade-up" style={{ background: 'rgba(255, 250, 240, 0.7)', borderRadius: '1.5rem', padding: '1.5rem', marginBottom: '2.5rem', borderLeft: '4px solid var(--accent)', fontStyle: 'italic', color: 'var(--text-dark)', fontSize: '1rem' }}>
         <i className="fas fa-quote-left" style={{ color: 'var(--accent)', marginRight: 8 }} /> {bioText}
       </div>
 
       {/* Section Title */}
-      <div className="fade-up" style={{
-        fontFamily: 'Cormorant Garamond', fontSize: '2rem', marginBottom: '1.8rem',
-        borderLeft: '5px solid var(--accent)', paddingLeft: '1rem', color: 'var(--accent-dark)',
-      }}>
+      <div className="fade-up author-more-title" style={{ fontFamily: 'Cormorant Garamond', fontSize: '2rem', marginBottom: '1.8rem', borderLeft: '5px solid var(--accent)', paddingLeft: '1rem', color: 'var(--accent-dark)' }}>
         <i className="fas fa-feather-alt" style={{ color: 'var(--accent)', marginRight: 12 }} />
         इस रचनाकार की रचनाएँ
       </div>
@@ -253,14 +203,11 @@ function AuthorContent() {
         <i className="fas fa-search" style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
         <input
           type="text"
+          className="author-search-input"
           placeholder="शीर्षक या कविता के अंश से खोजें..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{
-            width: '100%', padding: '1rem 1rem 1rem 3rem', borderRadius: 60,
-            border: '1px solid var(--border-light)', background: 'white',
-            fontFamily: 'inherit', fontSize: '0.9rem', transition: '0.2s', outline: 'none',
-          }}
+          style={{ width: '100%', padding: '1rem 1rem 1rem 3rem', borderRadius: 60, border: '1px solid var(--border-light)', background: 'white', fontFamily: 'inherit', fontSize: '0.9rem', transition: '0.2s', outline: 'none' }}
         />
       </div>
 
@@ -271,16 +218,12 @@ function AuthorContent() {
           <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>😢 अभी तक कोई रचना प्रकाशित नहीं हुई।</p>
         </div>
       ) : (
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          gap: '1.8rem',
-        }}>
+        <div className="author-poems-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.8rem' }}>
           {filteredPoems.map((poem) => (
             <Link
               href={`/poem/${poem.slug}`}
               key={poem._id}
-              className="poem-card fade-up"
+              className="poem-card author-poem-card fade-up"
               style={{
                 background: 'white', borderRadius: '1.5rem', padding: '1.5rem',
                 transition: '0.25s', border: '1px solid var(--border-light)',
@@ -311,49 +254,17 @@ export default function AuthorPage() {
   return (
     <Suspense fallback={
       <main className="mehfil-container" style={{ padding: '2rem 0 4rem' }}>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '70vh',
-          width: '100%',
-        }}>
-          <div style={{
-            textAlign: 'center',
-            background: 'rgba(255, 253, 248, 0.9)',
-            backdropFilter: 'blur(8px)',
-            padding: '3rem 3.5rem',
-            borderRadius: '3rem',
-            border: '1px solid var(--border-light)',
-            boxShadow: 'var(--shadow-sm)',
-          }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '70vh', width: '100%' }}>
+          <div style={{ textAlign: 'center', background: 'rgba(255, 253, 248, 0.9)', backdropFilter: 'blur(8px)', padding: '3rem 3.5rem', borderRadius: '3rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 14, marginBottom: 24 }}>
               <div style={{ width: 22, height: 22, background: '#e0a87c', borderRadius: '50%', animation: 'inkFlowPoets 1.4s infinite ease-in-out both', animationDelay: '-0.32s' }} />
               <div style={{ width: 22, height: 22, background: 'var(--accent)', borderRadius: '50%', animation: 'inkFlowPoets 1.4s infinite ease-in-out both', animationDelay: '-0.16s' }} />
               <div style={{ width: 22, height: 22, background: 'var(--accent-dark)', borderRadius: '50%', animation: 'inkFlowPoets 1.4s infinite ease-in-out both' }} />
             </div>
-            <div style={{
-              fontFamily: 'Cormorant Garamond, serif',
-              fontSize: '1.4rem',
-              letterSpacing: '1px',
-              background: 'linear-gradient(120deg, #c16a4b, #e4a482)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-              fontWeight: 700,
-              marginBottom: 12,
-            }}>
+            <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.4rem', letterSpacing: '1px', background: 'linear-gradient(120deg, #c16a4b, #e4a482)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', fontWeight: 700, marginBottom: 12 }}>
               रचनाकार की दुनिया में आपका स्वागत है...
             </div>
-            <div style={{
-              fontSize: '0.85rem',
-              color: 'var(--text-muted)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 8,
-            }}>
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
               <i className="fas fa-feather-alt" style={{ animation: 'featherSwayPoets 1.8s infinite' }} />
               कृपया प्रतीक्षा करें
               <i className="fas fa-spinner fa-pulse" />

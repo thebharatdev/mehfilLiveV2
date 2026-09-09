@@ -6,6 +6,8 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { API_BASE_URL, Poem, Writer, formatDate } from '@/lib/mehfil';
 import { useToast } from '@/components/site/ToastProvider';
 
+type FontSize = 'sm' | 'md' | 'lg' | 'xl';
+
 function PoemContent() {
   const params = useParams();
   const searchParams = useSearchParams();
@@ -15,6 +17,7 @@ function PoemContent() {
   const [author, setAuthor] = useState<Writer | null>(null);
   const [authorPoems, setAuthorPoems] = useState<Poem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fontSize, setFontSize] = useState<FontSize>('md');
 
   useEffect(() => {
     if (!slug) return;
@@ -107,12 +110,38 @@ function PoemContent() {
     ? poem.category.charAt(0).toUpperCase() + poem.category.slice(1)
     : 'अन्य';
 
+  const fontSizes: { key: FontSize; label: string }[] = [
+    { key: 'sm', label: 'A' },
+    { key: 'md', label: 'A' },
+    { key: 'lg', label: 'A' },
+    { key: 'xl', label: 'A' },
+  ];
+
   return (
     <main className="poem-main" style={{ padding: '2rem 0 4rem' }}>
       <div className="mehfil-container">
-        <Link href="/poems" className="back-link">
-          <i className="fas fa-arrow-left" /> सभी कविताएँ
-        </Link>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+          <Link href="/poems" className="back-link" style={{ marginBottom: 0 }}>
+            <i className="fas fa-arrow-left" /> सभी कविताएँ
+          </Link>
+
+          {/* Font Size Controls */}
+          <div className="font-size-controls">
+            <span className="fs-label">आकार</span>
+            {fontSizes.map((fs, idx) => (
+              <button
+                key={fs.key}
+                className={`fs-btn ${fontSize === fs.key ? 'active' : ''}`}
+                onClick={() => setFontSize(fs.key)}
+                style={{ fontSize: `${0.7 + idx * 0.15}rem` }}
+                aria-label={`फ़ॉन्ट आकार ${fs.key}`}
+                title={`फ़ॉन्ट ${fs.key === 'sm' ? 'छोटा' : fs.key === 'md' ? 'मध्यम' : fs.key === 'lg' ? 'बड़ा' : 'सबसे बड़ा'}`}
+              >
+                {fs.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* Poem Card */}
         <div className="poem-detail-card fade-up" style={{ marginBottom: '3rem' }}>
@@ -127,7 +156,7 @@ function PoemContent() {
               <i className="far fa-calendar-alt" /> {formatDate(poem.createdAt)}
             </span>
           </div>
-          <div className="poem-body" style={{ position: 'relative', zIndex: 2 }}>
+          <div className={`poem-body fs-${fontSize}`} style={{ position: 'relative', zIndex: 2 }}>
             {poem.body}
           </div>
         </div>
@@ -187,7 +216,7 @@ function PoemContent() {
         {/* More Poems by Same Writer */}
         {authorPoems.length > 0 && (
           <div className="more-poems fade-up" style={{ marginTop: '2rem' }}>
-            <h2 style={{
+            <h2 className="author-more-title" style={{
               fontFamily: 'Cormorant Garamond',
               fontSize: '2rem',
               marginBottom: '1.8rem',
@@ -198,7 +227,7 @@ function PoemContent() {
               <i className="fas fa-book-open" style={{ color: 'var(--accent)', marginRight: '10px' }} />
               इसी रचनाकार की और कविताएँ
             </h2>
-            <div style={{
+            <div className="more-poems-grid" style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
               gap: '1.8rem',

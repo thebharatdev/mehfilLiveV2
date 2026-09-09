@@ -108,7 +108,7 @@ export function Header() {
               <Link href="/login">प्रवेश करें</Link>
             )}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="nav-actions">
             <button className="nav-btn write-btn" onClick={handlePublish}>
               <i className="fas fa-pen-fancy" />
               <span>लेखन प्रारम्भ करें</span>
