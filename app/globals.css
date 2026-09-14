@@ -1014,6 +1014,219 @@ footer::after {
   .action { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
 }
 
+/* ===== Poem of the Week ===== */
+.potw-section { margin-bottom: 2.5rem; }
+.potw-card {
+  position: relative;
+  background: linear-gradient(135deg, #fff9f0 0%, #fff4e8 40%, #fdeee0 100%);
+  border: 1px solid rgba(193, 106, 75, 0.2);
+  border-radius: 2rem;
+  padding: 2.5rem;
+  overflow: hidden;
+  box-shadow: 0 20px 50px -15px rgba(193, 106, 75, 0.15);
+  transition: all 0.4s ease;
+}
+.potw-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px -15px rgba(193, 106, 75, 0.25);
+  border-color: rgba(193, 106, 75, 0.35);
+}
+.potw-shimmer {
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: potwShimmer 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes potwShimmer {
+  0% { left: -50%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+.potw-decoration {
+  position: absolute;
+  font-size: 7rem;
+  color: rgba(193, 106, 75, 0.06);
+  pointer-events: none;
+  z-index: 0;
+  font-family: serif;
+  animation: potwDecorFloat 6s ease-in-out infinite alternate;
+}
+.potw-decoration-left { left: 10px; bottom: -20px; }
+.potw-decoration-right { right: 10px; top: -10px; animation-delay: -3s; }
+@keyframes potwDecorFloat {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-12px) rotate(8deg); }
+}
+.potw-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #fff8e8, #f5e6c8);
+  border-radius: 50px;
+  color: #9e7a2f;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1px solid rgba(228, 184, 107, 0.3);
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+  animation: potwBadgePulse 3s ease-in-out infinite;
+}
+.potw-badge i { font-size: 0.9rem; }
+@keyframes potwBadgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(228, 184, 107, 0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(228, 184, 107, 0); }
+}
+.potw-content { position: relative; z-index: 2; }
+.potw-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.potw-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(193, 106, 75, 0.1);
+  color: var(--accent-dark);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.potw-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.potw-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  animation: potwTitleSlide 0.8s ease-out;
+}
+@keyframes potwTitleSlide {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.potw-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+.potw-author-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 1.1rem;
+  font-family: 'Cormorant Garamond', serif;
+  overflow: hidden; flex-shrink: 0;
+  border: 2px solid var(--accent-soft);
+}
+.potw-author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.potw-author-name {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+.potw-body {
+  position: relative;
+  margin-bottom: 1.8rem;
+  padding-left: 1.5rem;
+}
+.potw-quote-icon {
+  position: absolute;
+  left: 0; top: 0;
+  font-size: 1.2rem;
+  color: var(--accent);
+  opacity: 0.4;
+}
+.potw-body p {
+  font-family: 'Tiro Devanagari Hindi', 'Noto Serif Devanagari', serif;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--text-dark);
+  opacity: 0.85;
+}
+.potw-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.potw-read-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent);
+  color: white;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 18px rgba(193, 106, 75, 0.3);
+  text-decoration: none;
+}
+.potw-read-btn:hover {
+  transform: translateX(6px);
+  background: #b25538;
+  box-shadow: 0 12px 25px rgba(193, 106, 75, 0.4);
+}
+.potw-share-btn {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: rgba(193, 106, 75, 0.08);
+  border: 1px solid rgba(193, 106, 75, 0.2);
+  color: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+.potw-share-btn:hover {
+  background: var(--accent);
+  color: white;
+  transform: translateY(-3px) rotate(8deg);
+  box-shadow: 0 8px 18px rgba(193, 106, 75, 0.3);
+}
+
+@media (max-width: 768px) {
+  .potw-card { padding: 1.5rem; border-radius: 1.5rem; }
+  .potw-title { font-size: 1.8rem; }
+  .potw-body p { font-size: 0.95rem; line-height: 1.7; }
+  .potw-body { padding-left: 1.2rem; }
+  .potw-decoration { font-size: 4rem; }
+  .potw-read-btn { padding: 12px 24px; font-size: 0.85rem; }
+  .potw-share-btn { width: 42px; height: 42px; }
+  .potw-badge { font-size: 0.78rem; padding: 8px 18px; }
+}
+
+@media (max-width: 480px) {
+  .potw-card { padding: 1.2rem; }
+  .potw-title { font-size: 1.5rem; }
+  .potw-body p { font-size: 0.88rem; }
+  .potw-meta-row { gap: 0.5rem; }
+  .potw-category { font-size: 0.72rem; padding: 4px 12px; }
+  .potw-date { font-size: 0.72rem; }
+  .potw-author-avatar { width: 38px; height: 38px; font-size: 0.95rem; }
+  .potw-author-name { font-size: 0.85rem; }
+  .potw-actions { flex-wrap: wrap; }
+  .potw-read-btn { width: 100%; justify-content: center; }
+  .potw-decoration { display: none; }
+}
+
 /* Back link */
 .back-link {
   display: inline-flex; align-items: center; gap: 8px;
@@ -1346,6 +1559,11 @@ footer::after {
 }
 
 /* ===== Profile Page ===== */
+.profile-page-wrap { padding: 2rem 0 3rem; }
+.profile-loading-wrap {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 60vh; gap: 1rem;
+}
 .profile-hero-card {
   background: rgba(255, 253, 248, 0.92);
   backdrop-filter: blur(12px);
@@ -1404,135 +1622,143 @@ footer::after {
 }
 .profile-tag i { font-size: 0.7rem; color: var(--accent); }
 .profile-tag-email { max-width: 100%; overflow-wrap: anywhere; }
-.profile-avatar-wrap {
-  flex-shrink: 0;
-}
+.profile-avatar-wrap { flex-shrink: 0; }
 .profile-avatar-img {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid var(--accent-soft);
-  background: #efe0d2;
-  margin-top: -65px;
-  box-shadow: 0 8px 24px rgba(120, 80, 50, 0.15);
+  width: 130px; height: 130px; border-radius: 50%; object-fit: cover;
+  border: 4px solid var(--accent-soft); background: #efe0d2;
+  margin-top: -65px; box-shadow: 0 8px 24px rgba(120, 80, 50, 0.15);
 }
 .profile-avatar-placeholder {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
+  width: 130px; height: 130px; border-radius: 50%;
   border: 4px solid var(--accent-soft);
   background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  color: white;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3.5rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: -65px;
-  box-shadow: 0 8px 24px rgba(120, 80, 50, 0.15);
+  color: white; font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: -65px; box-shadow: 0 8px 24px rgba(120, 80, 50, 0.15);
 }
-.profile-hero-info {
-  flex: 1;
-  min-width: 0;
-}
+.profile-hero-info { flex: 1; min-width: 0; }
 .profile-hero-name {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--accent-dark);
-  margin-bottom: 0.3rem;
-}
-.profile-hero-meta {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  margin-bottom: 0.5rem;
+  font-size: 2rem; font-weight: 700;
+  color: var(--accent-dark); margin-bottom: 0.3rem;
 }
 .profile-hero-bio {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  font-style: italic;
-  line-height: 1.6;
+  color: var(--text-muted); font-size: 0.85rem;
+  font-style: italic; line-height: 1.6;
 }
 .profile-hero-bio-empty {
-  font-style: normal;
-  opacity: 0.6;
-  font-size: 0.8rem;
+  font-style: normal; opacity: 0.6; font-size: 0.8rem;
 }
 .profile-edit-btn {
   background: rgba(193, 106, 75, 0.08);
   border: 1px solid rgba(193, 106, 75, 0.2);
   color: var(--accent);
-  padding: 10px 20px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: 0.25s;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-  flex-shrink: 0;
+  padding: 10px 20px; border-radius: 50px;
+  font-weight: 600; font-size: 0.85rem; cursor: pointer;
+  transition: 0.25s; display: inline-flex; align-items: center;
+  gap: 8px; white-space: nowrap; flex-shrink: 0;
 }
 .profile-edit-btn:hover {
-  background: var(--accent);
-  color: white;
+  background: var(--accent); color: white;
   transform: translateY(-2px);
   box-shadow: 0 8px 18px rgba(193, 106, 75, 0.2);
 }
 .profile-stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 2rem;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+  margin-top: 2rem; padding-top: 2rem;
   border-top: 1px solid var(--border-light);
 }
 .profile-stat-item {
-  text-align: center;
-  background: #faf6f2;
-  border-radius: 1.2rem;
-  padding: 1.5rem 0.75rem;
-  border: 1px solid var(--border-light);
-  transition: 0.25s;
+  text-align: center; background: #faf6f2; border-radius: 1.2rem;
+  padding: 1.5rem 0.75rem; border: 1px solid var(--border-light);
+  transition: 0.25s; overflow: hidden;
 }
 .profile-stat-item:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-sm);
+  transform: translateY(-4px); box-shadow: var(--shadow-sm);
 }
 .profile-stat-item i {
-  font-size: 1.8rem;
-  color: var(--accent);
-  margin-bottom: 0.5rem;
+  font-size: 1.8rem; color: var(--accent); margin-bottom: 0.5rem;
 }
 .profile-stat-num {
-  font-size: 2rem;
-  font-family: 'Cormorant Garamond', serif;
-  color: var(--accent-dark);
-  font-weight: 700;
+  font-size: 2rem; font-family: 'Cormorant Garamond', serif;
+  color: var(--accent-dark); font-weight: 700;
 }
+.profile-stat-date { font-size: 1.15rem; }
 .profile-stat-label {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: 0.3rem;
+  font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem;
 }
 .profile-empty-state {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--text-muted);
+  text-align: center; padding: 3rem 1rem; color: var(--text-muted);
 }
 .profile-empty-state i {
-  font-size: 3rem;
-  color: var(--accent);
-  opacity: 0.5;
-  margin-bottom: 1rem;
+  font-size: 3rem; color: var(--accent); opacity: 0.5; margin-bottom: 1rem;
 }
+.profile-poems-panel { margin-top: 2rem; }
+.profile-new-poem-btn { font-size: 0.85rem; padding: 10px 20px; }
+.profile-poem-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;
+}
+.profile-poem-meta { font-size: 0.8rem; color: var(--text-muted); }
+.profile-delete-btn { color: #c0392b; }
 .poem-panel-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.8rem;
+  font-family: 'Cormorant Garamond', serif; font-size: 1.8rem;
   color: var(--accent-dark);
+}
+.modal-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;
+  color: var(--accent-dark); margin-bottom: 1.5rem;
+}
+.modal-field { margin-bottom: 1rem; }
+.modal-label {
+  font-size: 0.85rem; color: var(--text-muted);
+  display: block; margin-bottom: 0.5rem;
+}
+.modal-textarea { min-height: 80px; }
+.modal-textarea-lg { min-height: 150px; }
+.modal-actions {
+  display: flex; gap: 0.5rem; justify-content: flex-end;
+}
+
+/* ===== Author Page Responsive ===== */
+.author-hero-card { text-align: center; }
+.author-stats-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2.5rem;
+}
+.author-stat-card {
+  background: white; border-radius: 1.5rem; padding: 1.5rem;
+  text-align: center; border: 1px solid var(--border-light); transition: 0.25s;
+}
+.author-stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-sm); }
+.author-stat-card i {
+  font-size: 2.2rem; color: var(--accent); margin-bottom: 0.8rem;
+}
+.author-stat-num {
+  font-size: 2rem; font-weight: 700; font-family: 'Cormorant Garamond', serif;
+  color: var(--accent-dark);
+}
+.author-stat-text { font-size: 1.5rem; }
+.author-stat-label {
+  font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem;
+}
+.author-poems-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.8rem;
+}
+.author-poem-card {
+  background: white; border-radius: 1.5rem; padding: 1.5rem;
+  transition: 0.25s; border: 1px solid var(--border-light);
+  cursor: pointer; text-decoration: none; color: inherit; display: block;
+}
+.author-poem-card:hover {
+  transform: translateY(-6px); box-shadow: var(--shadow-hover);
+  border-color: var(--accent-soft);
+}
+@media (max-width: 768px) {
+  .author-stats-grid { grid-template-columns: 1fr !important; gap: 1rem !important; margin-bottom: 1.5rem !important; }
+  .author-stat-card { padding: 1.2rem !important; }
+  .author-stat-card i { font-size: 1.8rem !important; }
+  .author-stat-num { font-size: 1.5rem !important; }
+  .author-stat-text { font-size: 1.2rem !important; }
 }
 
 /* ===== Responsive: Auth & Profile ===== */
@@ -1543,45 +1769,58 @@ footer::after {
   .auth-form-side { padding: 2.5rem 2rem; }
 }
 
+@media (max-width: 768px) {
+  .profile-hero-inner { padding: 1.5rem; }
+  .profile-cover { height: 110px; }
+  .profile-cover-pattern { font-size: 1.5rem; letter-spacing: 24px; }
+  .profile-hero-top {
+    flex-direction: column; text-align: center; gap: 0.8rem; align-items: center;
+  }
+  .profile-avatar-img {
+    width: 100px; height: 100px; margin-top: -50px; border-width: 3px;
+  }
+  .profile-avatar-placeholder {
+    width: 100px; height: 100px; margin-top: -50px; font-size: 2.5rem;
+  }
+  .profile-hero-tags { justify-content: center; }
+  .profile-hero-name { font-size: 1.6rem; }
+  .profile-edit-btn { width: 100%; justify-content: center; }
+  .profile-stats-row { gap: 0.75rem; margin-top: 1.5rem; padding-top: 1.5rem; }
+  .profile-stat-item { padding: 1rem 0.5rem; }
+  .profile-stat-num { font-size: 1.5rem; }
+  .profile-stat-date { font-size: 0.95rem; }
+  .profile-stat-label { font-size: 0.7rem; }
+  .poem-panel-title { font-size: 1.4rem; }
+  .profile-poems-panel { padding: 1.5rem; }
+  /* Author page */
+  .author-hero-card { padding: 1.5rem !important; border-radius: 1.5rem !important; }
+  .author-hero-card img { width: 100px !important; height: 100px !important; }
+  .author-hero-card h1 { font-size: 1.8rem !important; }
+  .author-poems-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
+  .author-poem-card { padding: 1.2rem !important; border-radius: 1.2rem !important; }
+  .author-poem-card h3 { font-size: 1.2rem !important; }
+  .author-poem-card p { font-size: 0.8rem !important; }
+  .author-more-title { font-size: 1.5rem !important; }
+  .author-search-input { padding: 0.8rem 1rem 0.8rem 2.8rem !important; font-size: 0.85rem !important; }
+}
+
 @media (max-width: 680px) {
   .auth-page-wrap { padding: 1rem; }
   .auth-back-link {
-    top: 16px;
-    left: 16px;
-    font-size: 0.8rem;
-    padding: 8px 16px;
+    top: 16px; left: 16px; font-size: 0.8rem; padding: 8px 16px;
   }
   .auth-card { border-radius: 2rem; }
   .auth-form-side { padding: 2rem 1.5rem; }
   .auth-form-title { font-size: 2rem; }
   .auth-art-title { font-size: 2rem; }
-  .auth-options-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
+  .auth-options-row { flex-direction: column; align-items: flex-start; gap: 12px; }
   .auth-social-btn { width: 42px; height: 42px; }
   .signup-field-grid { grid-template-columns: 1fr; gap: 0; }
-  .profile-hero-card { border-radius: 1.5rem; }
-  .profile-hero-inner { padding: 1.5rem; }
-  .profile-cover { height: 100px; }
-  .profile-cover-pattern { font-size: 1.4rem; letter-spacing: 20px; }
-  .profile-hero-top {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-    align-items: center;
-  }
-  .profile-avatar-img { width: 100px; height: 100px; margin-top: -50px; border-width: 3px; }
-  .profile-avatar-placeholder { width: 100px; height: 100px; margin-top: -50px; font-size: 2.5rem; }
-  .profile-hero-tags { justify-content: center; }
-  .profile-hero-name { font-size: 1.6rem; }
-  .profile-edit-btn { width: 100%; justify-content: center; }
-  .profile-stats-row { gap: 0.75rem; }
-  .profile-stat-item { padding: 1rem 0.5rem; }
-  .profile-stat-num { font-size: 1.5rem; }
-  .profile-stat-label { font-size: 0.7rem; }
-  .poem-panel-title { font-size: 1.4rem; }
+  .author-hero-card { padding: 1.2rem !important; }
+  .author-hero-card img { width: 80px !important; height: 80px !important; }
+  .author-hero-card h1 { font-size: 1.5rem !important; }
+  .author-poem-card { padding: 1rem !important; }
+  .author-poem-card h3 { font-size: 1.1rem !important; }
 }
 
 @media (max-width: 480px) {
@@ -1594,4 +1833,12 @@ footer::after {
   .profile-avatar-placeholder { width: 80px; height: 80px; margin-top: -40px; font-size: 2rem; }
   .profile-stat-item i { font-size: 1.4rem; }
   .profile-stat-num { font-size: 1.3rem; }
+  .profile-stat-date { font-size: 0.8rem; }
+  .profile-stat-label { font-size: 0.65rem; }
+  .profile-hero-name { font-size: 1.4rem; }
+  .poem-panel-title { font-size: 1.2rem; }
+  .profile-poems-panel { padding: 1.2rem; }
+  .profile-edit-btn { font-size: 0.8rem; padding: 8px 16px; }
+  .profile-tag { font-size: 0.72rem; padding: 4px 10px; }
+  .modal-dialog { padding: 1.5rem; width: 92%; }
 }

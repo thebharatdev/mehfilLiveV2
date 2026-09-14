@@ -36,7 +36,6 @@ export default function ProfilePage() {
       return;
     }
 
-    // Get locally stored user data as fallback
     const storedUser = localStorage.getItem('mehfil_user') || sessionStorage.getItem('mehfil_user');
     let localUser: Profile | null = null;
     if (storedUser) {
@@ -48,7 +47,6 @@ export default function ProfilePage() {
     })
       .then((r) => r.json())
       .then((data) => {
-        // Merge API data with local data as fallback
         const merged = { ...(localUser || {}), ...(data.user || {}) };
         if (data.user || localUser) {
           setProfile(merged);
@@ -58,7 +56,6 @@ export default function ProfilePage() {
         setLoading(false);
       })
       .catch(() => {
-        // If API fails, still show local user data
         if (localUser) {
           setProfile(localUser);
           setEditName(`${localUser.firstName || ''} ${localUser.lastName || ''}`.trim());
@@ -87,7 +84,6 @@ export default function ProfilePage() {
       if (data.success) {
         const updated = { ...profile, ...data.user };
         setProfile(updated);
-        // Update localStorage too
         const stored = localStorage.getItem('mehfil_user') || sessionStorage.getItem('mehfil_user');
         if (stored) {
           try {
@@ -126,13 +122,19 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <section style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+      <section className="profile-loading-wrap">
         <div className="spinner" />
       </section>
     );
   }
 
-  if (!profile) return null;
+  if (!profile) {
+    return (
+      <section className="profile-loading-wrap">
+        <p style={{ color: 'var(--text-muted)' }}>प्रोफ़ाइल लोड नहीं हो सकी। कृपया पुनः लॉगिन करें।</p>
+      </section>
+    );
+  }
 
   const fullName = `${profile.firstName || ''} ${profile.lastName || ''}`.trim() || 'अनाम रचनाकार';
   const genderLabel = profile.gender === 'male' ? 'पुरुष' : profile.gender === 'female' ? 'महिला' : profile.gender || '';
@@ -144,11 +146,10 @@ export default function ProfilePage() {
   const initials = (profile.firstName || 'U').charAt(0).toUpperCase();
 
   return (
-    <section style={{ paddingTop: '2rem', paddingBottom: '3rem' }}>
+    <section className="profile-page-wrap">
       <div className="mehfil-container">
         {/* Profile Hero Card */}
         <div className="profile-hero-card fade-up">
-          {/* Cover banner */}
           <div className="profile-cover">
             <div className="profile-cover-pattern">अ क म ह र स</div>
             <div className="profile-cover-overlay" />
@@ -206,7 +207,7 @@ export default function ProfilePage() {
               </div>
               <div className="profile-stat-item">
                 <i className="fas fa-calendar-plus" />
-                <div className="profile-stat-num">{memberSince || '—'}</div>
+                <div className="profile-stat-num profile-stat-date">{memberSince || '—'}</div>
                 <div className="profile-stat-label">सदस्यता</div>
               </div>
             </div>
@@ -214,13 +215,13 @@ export default function ProfilePage() {
         </div>
 
         {/* My Poems */}
-        <div className="glass-panel" id="my-poems" style={{ marginTop: '2rem' }}>
+        <div className="glass-panel profile-poems-panel" id="my-poems">
           <div className="poem-panel-header">
             <h2 className="poem-panel-title">
               <i className="fas fa-feather-alt" style={{ color: 'var(--accent)', marginRight: '10px' }} />
               मेरी रचनाएँ
             </h2>
-            <Link href="/publish" className="primary-btn" style={{ fontSize: '0.85rem', padding: '10px 20px' }}>
+            <Link href="/publish" className="primary-btn profile-new-poem-btn">
               <i className="fas fa-plus" /> नई रचना
             </Link>
           </div>
@@ -236,19 +237,19 @@ export default function ProfilePage() {
             poems.map((poem) => (
               <div className="poem-card-item" key={poem._id}>
                 <div className="poem-card-info">
-                  <h3 style={{ fontFamily: 'Cormorant Garamond', fontSize: '1.2rem' }}>{poem.title}</h3>
-                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                  <h3 className="profile-poem-title">{poem.title}</h3>
+                  <p className="profile-poem-meta">
                     {poem.category || 'अन्य'} · {formatDate(poem.createdAt)}
                   </p>
                 </div>
                 <div className="poem-card-actions">
-                  <Link href={`/poem/${poem.slug}`} className="action" style={{ fontSize: '0.8rem' }} aria-label={`${poem.title} देखें`} title="रचना देखें">
+                  <Link href={`/poem/${poem.slug}`} className="action" aria-label={`${poem.title} देखें`} title="रचना देखें">
                     <i className="far fa-eye" />
                   </Link>
-                  <button className="action" style={{ fontSize: '0.8rem' }} onClick={() => setPoemModal(poem)} aria-label={`${poem.title} संपादित करें`} title="रचना संपादित करें">
+                  <button className="action" onClick={() => setPoemModal(poem)} aria-label={`${poem.title} संपादित करें`} title="रचना संपादित करें">
                     <i className="fas fa-edit" />
                   </button>
-                  <button className="action" style={{ fontSize: '0.8rem', color: '#c0392b' }} onClick={() => handleDeletePoem(poem._id)} aria-label={`${poem.title} हटाएँ`} title="रचना हटाएँ">
+                  <button className="action profile-delete-btn" onClick={() => handleDeletePoem(poem._id)} aria-label={`${poem.title} हटाएँ`} title="रचना हटाएँ">
                     <i className="fas fa-trash" />
                   </button>
                 </div>
@@ -262,18 +263,16 @@ export default function ProfilePage() {
       {editModal && (
         <div className="modal-mask" onClick={() => setEditModal(false)}>
           <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
-            <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: '1.5rem', color: 'var(--accent-dark)', marginBottom: '1.5rem' }}>
-              प्रोफ़ाइल संपादित करें
-            </h2>
-            <div style={{ marginBottom: '1rem' }}>
-              <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>नाम</label>
+            <h2 className="modal-title">प्रोफ़ाइल संपादित करें</h2>
+            <div className="modal-field">
+              <label className="modal-label">नाम</label>
               <input className="form-input" value={editName} onChange={(e) => setEditName(e.target.value)} />
             </div>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>परिचय</label>
-              <textarea className="form-input" style={{ minHeight: '80px' }} value={editBio} onChange={(e) => setEditBio(e.target.value)} />
+            <div className="modal-field">
+              <label className="modal-label">परिचय</label>
+              <textarea className="form-input modal-textarea" value={editBio} onChange={(e) => setEditBio(e.target.value)} />
             </div>
-            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+            <div className="modal-actions">
               <button className="secondary-btn" onClick={() => setEditModal(false)}>रद्द करें</button>
               <button className="primary-btn" onClick={handleUpdateProfile}>सहेजें</button>
             </div>
@@ -281,22 +280,20 @@ export default function ProfilePage() {
         </div>
       )}
 
-      {/* Poem Edit Modal */}
+      {/* Poem View Modal */}
       {poemModal && (
         <div className="modal-mask" onClick={() => setPoemModal(null)}>
           <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
-            <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: '1.5rem', color: 'var(--accent-dark)', marginBottom: '1.5rem' }}>
-              रचना संपादित करें
-            </h2>
-            <div style={{ marginBottom: '1rem' }}>
-              <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>शीर्षक</label>
+            <h2 className="modal-title">रचना देखें</h2>
+            <div className="modal-field">
+              <label className="modal-label">शीर्षक</label>
               <input className="form-input" defaultValue={poemModal.title} readOnly />
             </div>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>रचना</label>
-              <textarea className="form-input" style={{ minHeight: '150px' }} defaultValue={poemModal.body} readOnly />
+            <div className="modal-field">
+              <label className="modal-label">रचना</label>
+              <textarea className="form-input modal-textarea modal-textarea-lg" defaultValue={poemModal.body} readOnly />
             </div>
-            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+            <div className="modal-actions">
               <button className="secondary-btn" onClick={() => setPoemModal(null)}>बंद करें</button>
             </div>
           </div>

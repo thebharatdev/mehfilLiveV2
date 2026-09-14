@@ -169,21 +169,21 @@ function AuthorContent() {
       </div>
 
       {/* Stats Grid */}
-      <div className="stats-grid fade-up" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '2.5rem' }}>
-        <div style={{ background: 'white', borderRadius: '1.5rem', padding: '1.5rem', textAlign: 'center', border: '1px solid var(--border-light)', transition: '0.25s' }}>
-          <i className="fas fa-book-open" style={{ fontSize: '2.2rem', color: 'var(--accent)', marginBottom: '0.8rem' }} />
-          <div style={{ fontSize: '2rem', fontWeight: 700, fontFamily: 'Cormorant Garamond', color: 'var(--accent-dark)' }}>{poemsCount}</div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.3rem' }}>कुल रचनाएँ</div>
+      <div className="stats-grid fade-up author-stats-grid">
+        <div className="author-stat-card">
+          <i className="fas fa-book-open" />
+          <div className="author-stat-num">{poemsCount}</div>
+          <div className="author-stat-label">कुल रचनाएँ</div>
         </div>
-        <div style={{ background: 'white', borderRadius: '1.5rem', padding: '1.5rem', textAlign: 'center', border: '1px solid var(--border-light)', transition: '0.25s' }}>
-          <i className="fas fa-language" style={{ fontSize: '2.2rem', color: 'var(--accent)', marginBottom: '0.8rem' }} />
-          <div style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: 'Cormorant Garamond', color: 'var(--accent-dark)' }}>{langPref}</div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.3rem' }}>भाषा प्राथमिकता</div>
+        <div className="author-stat-card">
+          <i className="fas fa-language" />
+          <div className="author-stat-num author-stat-text">{langPref}</div>
+          <div className="author-stat-label">भाषा प्राथमिकता</div>
         </div>
-        <div style={{ background: 'white', borderRadius: '1.5rem', padding: '1.5rem', textAlign: 'center', border: '1px solid var(--border-light)', transition: '0.25s' }}>
-          <i className="fas fa-calendar-plus" style={{ fontSize: '2.2rem', color: 'var(--accent)', marginBottom: '0.8rem' }} />
-          <div style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: 'Cormorant Garamond', color: 'var(--accent-dark)' }}>{memberSince}</div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.3rem' }}>सदस्यता</div>
+        <div className="author-stat-card">
+          <i className="fas fa-calendar-plus" />
+          <div className="author-stat-num author-stat-text">{memberSince}</div>
+          <div className="author-stat-label">सदस्यता</div>
         </div>
       </div>
 
@@ -218,17 +218,12 @@ function AuthorContent() {
           <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>😢 अभी तक कोई रचना प्रकाशित नहीं हुई।</p>
         </div>
       ) : (
-        <div className="author-poems-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.8rem' }}>
+        <div className="author-poems-grid">
           {filteredPoems.map((poem) => (
             <Link
               href={`/poem/${poem.slug}`}
               key={poem._id}
               className="poem-card author-poem-card fade-up"
-              style={{
-                background: 'white', borderRadius: '1.5rem', padding: '1.5rem',
-                transition: '0.25s', border: '1px solid var(--border-light)',
-                cursor: 'pointer', textDecoration: 'none', color: 'inherit', display: 'block',
-              }}
             >
               <h3 style={{ fontFamily: 'Cormorant Garamond', fontSize: '1.4rem', marginBottom: '0.5rem', color: 'var(--accent-dark)' }}>
                 {poem.title || 'अनामिका'}
