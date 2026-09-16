@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useParams, useSearchParams } from 'next/navigation';
 import { API_BASE_URL, Poem, Writer, formatDate } from '@/lib/mehfil';
+import { sharePoemImage } from '@/lib/shareImage';
 import { useToast } from '@/components/site/ToastProvider';
 
 type FontSize = 'sm' | 'md' | 'lg' | 'xl';
@@ -60,20 +61,21 @@ function PoemContent() {
 
   const handleShare = async () => {
     const currentUrl = window.location.href;
-    if (navigator.share) {
-      try {
-        await navigator.share({
+    try {
+      await sharePoemImage(
+        {
           title: poem?.title || 'कविता',
-          text: (poem?.body || '').substring(0, 100),
-          url: currentUrl,
-        });
-      } catch {
-        navigator.clipboard?.writeText(currentUrl);
-        showToast('🔗 लिंक कॉपी हो गया! अब साझा करें');
-      }
-    } else {
+          body: poem?.body || '',
+          authorName,
+          username: (poem?.author as any)?.username || poem?.author?.firstName,
+          profilePic: poem?.author?.profilePic,
+        },
+        currentUrl,
+      );
+      showToast('✨ साझा करें तैयार है!');
+    } catch {
       navigator.clipboard?.writeText(currentUrl);
-      showToast('🔗 लिंक कॉपी हो गया! अब साझा करें');
+      showToast('🔗 लिंक कॉपी हो गया!');
     }
   };
 

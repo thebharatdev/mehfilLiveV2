@@ -4,6 +4,8 @@ import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { API_BASE_URL, Writer } from '@/lib/mehfil';
 
+import { matchesSearch } from '@/lib/search';
+
 const STYLE_FILTERS = [
   { key: 'all', label: 'सभी रचनाकार' },
   { key: 'ghazal', label: '🎵 ग़ज़ल' },
@@ -134,12 +136,15 @@ export default function PoetsPage() {
       result = result.filter((w) => w.style === style);
     }
     if (search.trim()) {
-      const q = search.toLowerCase();
-      result = result.filter(
-        (w) =>
-          `${w.firstName} ${w.lastName || ''}`.toLowerCase().includes(q) ||
-          (w.city || '').toLowerCase().includes(q) ||
-          (w.bio || '').toLowerCase().includes(q)
+      result = result.filter((w) =>
+        matchesSearch(
+          search,
+          `${w.firstName} ${w.lastName || ''}`,
+          w.firstName,
+          w.lastName || '',
+          w.city || '',
+          w.bio || '',
+        )
       );
     }
     return result;
@@ -265,21 +270,16 @@ export default function PoetsPage() {
           😢 कोई रचनाकार नहीं मिला...
         </div>
       ) : (
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          gap: '2rem',
-          margin: '2rem 0',
-        }}>
+        <div className="poets-grid">
           {filtered.map((writer) => (
             <Link
               href={`/author?id=${writer._id}`}
               key={writer._id}
-              className="writer-card-premium fade-up"
+              className="writer-card-premium poet-card fade-up"
               style={{
                 background: 'white',
                 borderRadius: '2rem',
-                padding: '2rem',
+                padding: 'clamp(1rem, 2.5vw, 2rem)',
                 textAlign: 'center',
                 transition: 'all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.2)',
                 border: '1px solid var(--border-light)',
@@ -290,12 +290,12 @@ export default function PoetsPage() {
                 display: 'block',
               }}
             >
-              <div style={{
-                width: 120, height: 120,
-                margin: '0 auto 1.2rem',
+              <div className="poet-card-avatar" style={{
+                width: 'clamp(78px, 10vw, 120px)', height: 'clamp(78px, 10vw, 120px)',
+                margin: '0 auto clamp(0.7rem, 1.5vw, 1.2rem)',
                 borderRadius: '50%',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '3rem', color: 'white',
+                fontSize: 'clamp(2rem, 4vw, 3rem)', color: 'white',
                 overflow: 'hidden',
                 background: 'linear-gradient(145deg, #dfbda9, #c78d72)',
                 boxShadow: '0 15px 25px -8px rgba(0,0,0,0.1)',
@@ -306,19 +306,21 @@ export default function PoetsPage() {
                   <i className="fas fa-feather-alt" />
                 )}
               </div>
-              <div style={{ display: 'inline-block', background: '#e8c8ba', color: 'var(--accent-dark)', borderRadius: 30, padding: '0.2rem 0.8rem', fontSize: '0.65rem', marginBottom: '0.5rem', fontWeight: 600 }}>
-                🎭 {STYLE_LABELS[writer.style || 'shayari'] || 'शायरी'}
-              </div>
-              <h3 style={{ fontSize: '1.6rem', fontFamily: 'Cormorant Garamond', margin: '0.5rem 0', color: 'var(--accent-dark)' }}>
-                {writer.firstName} {writer.lastName || ''}
-              </h3>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.5rem 0', lineHeight: 1.5 }}>
-                {(writer.bio || 'शब्दों का मुसाफ़िर, एहसासों का हमसफ़र।').substring(0, 85)}
-              </p>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', margin: '1rem 0', fontSize: '0.8rem', color: 'var(--accent)' }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <i className="fas fa-book-open" /> {writer.poemCount || 0} रचनाएँ
-                </span>
+              <div className="poet-card-info">
+                <div className="poet-card-style-badge" style={{ display: 'inline-block', background: '#e8c8ba', color: 'var(--accent-dark)', borderRadius: 30, padding: '0.2rem 0.8rem', fontSize: '0.65rem', marginBottom: '0.5rem', fontWeight: 600 }}>
+                  🎭 {STYLE_LABELS[writer.style || 'shayari'] || 'शायरी'}
+                </div>
+                <h3 className="poet-card-name" style={{ fontSize: 'clamp(1.15rem, 2vw, 1.6rem)', fontFamily: 'Cormorant Garamond', margin: '0.5rem 0', color: 'var(--accent-dark)' }}>
+                  {writer.firstName} {writer.lastName || ''}
+                </h3>
+                <p className="poet-card-bio" style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.5rem 0', lineHeight: 1.5 }}>
+                  {(writer.bio || 'शब्दों का मुसाफ़िर, एहसासों का हमसफ़र।').substring(0, 85)}
+                </p>
+                <div className="poet-card-stats" style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', margin: '1rem 0', fontSize: '0.8rem', color: 'var(--accent)' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <i className="fas fa-book-open" /> {writer.poemCount || 0} रचनाएँ
+                  </span>
+                </div>
               </div>
             </Link>
           ))}

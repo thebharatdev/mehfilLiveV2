@@ -129,11 +129,11 @@ export default function PublishPage() {
                   <span>मैं घोषणा करता/करती हूँ कि यह रचना मेरी मौलिक कृति है और किसी अन्य की कॉपीराइट का उल्लंघन नहीं करती।</span>
                 </label>
               </div>
-              <div style={{ display: 'flex', gap: '1rem' }}>
-                <button className="primary-btn" type="submit" disabled={loading}>
+              <div className="publish-btn-row">
+                <button className="primary-btn publish-submit-btn" type="submit" disabled={loading}>
                   {loading ? <div className="spinner" style={{ width: '20px', height: '20px', borderWidth: '2px' }} /> : <><i className="fas fa-paper-plane" /> प्रकाशित करें</>}
                 </button>
-                <button className="secondary-btn" type="button" onClick={handleDraft}>
+                <button className="secondary-btn publish-draft-btn" type="button" onClick={handleDraft}>
                   <i className="fas fa-save" /> ड्राफ़्ट सहेजें
                 </button>
               </div>

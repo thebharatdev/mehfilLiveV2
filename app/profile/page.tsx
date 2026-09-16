@@ -47,10 +47,7 @@ export default function ProfilePage() {
     })
       .then((r) => r.json())
       .then((data) => {
-          console.log('PROFILE API RESPONSE:', data);
         const merged = { ...(localUser || {}), ...(data.user || {}) };
-
-        console.log('MERGED PROFILE:', merged);
         if (data.user || localUser) {
           setProfile(merged);
           setEditName(`${merged.firstName || ''} ${merged.lastName || ''}`.trim());
@@ -155,12 +152,10 @@ export default function ProfilePage() {
   const initials = (profile.firstName || 'U').charAt(0).toUpperCase();
 
   return (
-    
     <section className="profile-page-wrap">
-      
       <div className="mehfil-container">
         {/* Profile Hero Card */}
-        <div className="profile-hero-card">
+        <div className="profile-hero-card fade-up">
           {/* Cover */}
           <div className="profile-cover">
             <div className="profile-cover-pattern">अ क म ह र स</div>
@@ -188,8 +183,6 @@ export default function ProfilePage() {
               </div>
 
               {/* Info */}
-              
-              
               <div className="profile-hero-info">
                 <h2 className="profile-hero-name">{fullName}</h2>
                 <div className="profile-hero-tags">

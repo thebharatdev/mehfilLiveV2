@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { API_BASE_URL, Poem, formatDate } from '@/lib/mehfil';
+import { matchesSearch } from '@/lib/search';
 
 const MOODS = ['all', 'love', 'sad', 'motivation', 'nature', 'shayari'];
 const MOOD_ICONS: Record<string, string> = {
@@ -58,12 +59,16 @@ export default function PoemsPage() {
       result = result.filter((p) => (p.category || '').toLowerCase() === mood);
     }
     if (search.trim()) {
-      const q = search.toLowerCase();
       result = result.filter(
         (p) =>
-          p.title.toLowerCase().includes(q) ||
-          (p.body || '').toLowerCase().includes(q) ||
-          (p.author?.firstName || '').toLowerCase().includes(q)
+          matchesSearch(
+            search,
+            p.title,
+            p.body || '',
+            p.author?.firstName || '',
+            p.author?.lastName || '',
+            `${p.author?.firstName || ''} ${p.author?.lastName || ''}`,
+          )
       );
     }
     return result;
@@ -200,7 +205,7 @@ export default function PoemsPage() {
           )}
 
           {totalPages > 1 && (
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '3rem' }}>
+            <div className="pagination-bar">
               {Array.from({ length: totalPages }, (_, i) => (
                 <button
                   key={i}
