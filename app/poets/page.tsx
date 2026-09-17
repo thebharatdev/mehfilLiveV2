@@ -128,7 +128,7 @@ export default function PoetsPage() {
       document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
     }, 100);
     return () => { clearTimeout(timer); observer.disconnect(); };
-  }, [loading, writers]);
+  }, [loading, writers, search, style]);
 
   const filtered = useMemo(() => {
     let result = writers;

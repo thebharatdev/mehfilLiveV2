@@ -46,7 +46,7 @@ export default function PoemsPage() {
       document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
     }, 100);
     return () => { clearTimeout(timer); observer.disconnect(); };
-  }, [loading]);
+  }, [loading, search, mood, page]);
 
   const poemOfTheWeek = useMemo(() => {
     if (!poems.length) return null;

@@ -240,10 +240,10 @@ section { padding: 4rem 0; }
 .featured-poem { font-size: 1.8rem; line-height: 2; text-align: center; color: #8b6b5a; font-family: 'Tiro Devanagari Hindi', serif; }
 
 /* Poem cards */
-.poem-grid { display: flex; gap: 20px; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: #c16a4b #f3eae2; padding-bottom: 50px; }
-.poem-grid::-webkit-scrollbar { height: 8px; }
-.poem-grid::-webkit-scrollbar-track { background: #f3eae2; border-radius: 20px; }
-.poem-grid::-webkit-scrollbar-thumb { background: #c16a4b; border-radius: 20px; }
+.poem-grid { display: flex; gap: 20px; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: #c16a4b #f3eae2; padding-bottom: 50px; -webkit-overflow-scrolling: touch; }
+.poem-grid::-webkit-scrollbar { height: 8px; -webkit-appearance: none; }
+.poem-grid::-webkit-scrollbar-track { background: #f3eae2; border-radius: 20px; -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.1); }
+.poem-grid::-webkit-scrollbar-thumb { background: #c16a4b; border-radius: 20px; -webkit-appearance: none; }
 .poem-grid::-webkit-scrollbar-thumb:hover { background: #9e4f36; }
 .poem-grid .poem-card { flex: 0 0 calc(33.333% - 14px); min-width: 320px; }
 
@@ -286,25 +286,21 @@ section { padding: 4rem 0; }
 .writers-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; }
 @media (max-width: 639px) {
   .writers-row {
-    display: flex;
-    overflow-x: auto;
-    gap: 1rem;
-    padding-bottom: 1rem;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
-  .writers-row::-webkit-scrollbar { height: 6px; }
-  .writers-row::-webkit-scrollbar-track { background: #f3eae2; border-radius: 20px; }
-  .writers-row::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 20px; }
   .writers-row .writer-card {
-    flex: 0 0 75%;
-    min-width: 220px;
-    scroll-snap-align: center;
-    padding: 1.5rem 1rem;
+    padding: 1rem 0.6rem;
+    border-radius: 1.25rem;
   }
-  .writers-row .writer-img { width: 80px; height: 80px; font-size: 2rem; }
-  .writers-row .writer-card h3 { font-size: 1.1rem; }
-  .writers-row .writer-card p { font-size: 0.78rem; }
+  .writers-row .writer-img { width: 56px; height: 56px; font-size: 1.4rem; margin-bottom: 0.6rem; }
+  .writers-row .writer-card h3 { font-size: 0.85rem; margin-bottom: 0.2rem; }
+  .writers-row .writer-card p { font-size: 0.6rem; margin-bottom: 0.5rem; line-height: 1.3; }
+  .writers-row .follow-btn { padding: 0.35rem 0.8rem; font-size: 0.65rem; }
+}
+@media (max-width: 360px) {
+  .writers-row { grid-template-columns: 1fr; }
 }
 .writer-card {
   background: white; border-radius: 2rem; padding: 2rem 1.5rem;
@@ -1068,10 +1064,10 @@ footer::after {
 @media (max-width: 680px) {
   .hero h1 { font-size: 3rem; }
   .hero-cards { gap: 0.5rem; }
-  .float-card { padding: 0.8rem; border-radius: 1.2rem; }
-  .float-card h3 { font-size: 1rem; margin-bottom: 0.4rem; }
-  .float-card p { font-size: 0.62rem; line-height: 1.4; }
-  .float-card .card-icon { width: 32px; height: 32px; font-size: 14px; margin-bottom: 6px; }
+  .float-card { padding: 0.7rem 0.6rem; border-radius: 1rem; }
+  .float-card h3 { font-size: 1.15rem; margin-bottom: 0.3rem; }
+  .float-card p { font-size: 0.72rem; line-height: 1.35; }
+  .float-card .card-icon { width: 36px; height: 36px; font-size: 16px; margin-bottom: 6px; }
   .float-card:nth-child(1)::after,
   .float-card:nth-child(2)::after,
   .float-card:nth-child(3)::after { font-size: 40px; }
