@@ -1,6 +1,0 @@
-{
-  "name": "Mehfil Live",
-  "description": "A sanctuary for Hindi & Urdu poetry, ghazals, and shayari — where words find wings and emotions echo timelessly.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
